@@ -1,0 +1,83 @@
+{
+  "intro": "Important Notice: We cordially invite you to register and utilize the account rental service offered by [Thinking Machines] (hereinafter referred to as the \"Platform\"). It is imperative that you thoroughly review and comprehend all of the terms of this Agreement prior to registering, with a particular emphasis on the disclaimer and limitation of liability provisions of the Platform. By clicking \"Register\" or \"Agree\" and completing the registration process, you will be considered to have read, understood, and accepted all of the terms of this Agreement, thereby entering into a legally binding agreement with the Platform.",
+  "sections": [
+    {
+      "h": "Article 1 — Parties to this Agreement",
+      "items": [
+        "1. Party A (Service Provider): [Thinking Machines]",
+        "2. Party B (User/Registrant): The individual or organization that registers an account through the Platform and utilizes the Platform’s services."
+      ]
+    },
+    {
+      "h": "Article 2 — Service Content",
+      "items": [
+        "1. The Platform offers users a variety of online services that are associated with account rental, such as account display, payment channels, and after-sales service support.",
+        "2. The account rental functionality provided by the Platform is available to users who register and utilize the Platform’s services, provided that they adhere to the terms of this Agreement and the Platform’s policies.",
+        "3. The Platform reserves the right to modify, terminate, or modify all or a portion of its services at any time in accordance with business developments. Users will be notified via announcements or notifications."
+      ]
+    },
+    {
+      "h": "Article 3 — User Registration and Account Management",
+      "items": [
+        "1. When registering, users are required to provide accurate, legal, and valid information. They are prohibited from impersonating others or providing fraudulent information.",
+        "2. Users will be granted access to a Platform account upon successful registration. Users are required to maintain their registered account and password in a proper manner and are prohibited from transferring, renting, or lending their account to others.",
+        "3. The Platform is not liable for any loss, disclosure, or misappropriation of an account that is the result of inadequate user management.",
+        "4. The Platform must be promptly notified by users of any unauthorized use of their account."
+      ]
+    },
+    {
+      "h": "Article 4 — Usage Guidelines",
+      "items": [
+        "1. When utilizing Platform services, users are required to comply with laws, regulations, and Platform policies. They are prohibited from engaging in any illegal, unauthorized, infringing, malicious, or inappropriate conduct.",
+        "2. Users consent to the following: • The failure to maliciously damage the Platform system or interfere with the operation of the Service; • The use of a rented account to engage in activities such as gambling, fraud, money laundering, hacking, using cheats, or disseminating illegal content; • The failure to infringe upon the legitimate rights and interests of others, including but not limited to intellectual property rights, privacy rights, and reputation rights.",
+        "3. The Platform retains the authority to evaluate and supervise user conduct. The Platform reserves the right to implement measures, such as account suspension, warnings, restrictions on use, and termination of service, in the event that a user violates the Platform’s regulations."
+      ]
+    },
+    {
+      "h": "Article 5 — Rental Services Special Notes",
+      "items": [
+        "1. Rental accounts are temporarily accessible through the Platform. Users are prohibited from subletting the account or modifying account security information without authorization.",
+        "2. Users are required to adhere to the terms of their order when using their rental accounts and refrain from engaging in any activity that contravenes the Platform’s original policies.",
+        "3. The user is solely responsible for any losses, restrictions, or blocking of an account that result from unlawful use."
+      ]
+    },
+    {
+      "h": "Article 6 — Payment and Fees",
+      "items": [
+        "1. Users are required to pay the appropriate rental fees and deposit as indicated on the page while utilizing Platform services.",
+        "2. The Platform’s published rules or directives shall govern all payment, refund, and settlement methods.",
+        "3. The Platform retains the right to deduct from the deposit or request additional recompense for losses that users incur as a result of improper use or breach of contract."
+      ]
+    },
+    {
+      "h": "Article 7 — Risk Warning and Disclaimer",
+      "items": [
+        "1. Users comprehend that the account rental service may be susceptible to risks such as service interruption, account abnormality, and restricted use as a result of policy changes, platform rule adjustments, system malfunctions, or third-party issues.",
+        "2. The platform is not responsible for any direct or indirect losses that users may experience during their use, unless such losses are the result of the platform’s egregious negligence.",
+        "3. The platform is not responsible for any failure to provide services as a result of force majeure, which includes but is not limited to natural disasters, government actions, conflict, network outages, hacker attacks, and so forth."
+      ]
+    },
+    {
+      "h": "Article 8 — Termination and Modification of the Agreement",
+      "items": [
+        "1. The platform reserves the right to publish any modifications to this Agreement through announcements or notifications in response to changes in laws and regulations or operational requirements. Modified agreements will be implemented upon their publication.",
+        "2. Users must promptly discontinue their use of the platform’s services if they are dissatisfied with the revised Agreement. The modified Agreement will be considered accepted upon continued use.",
+        "3. The platform reserves the right to terminate service and the user’s account at any time if a user severely violates this Agreement."
+      ]
+    },
+    {
+      "h": "Article 9 — Governing Law and Dispute Resolution",
+      "items": [
+        "1. The laws and regulations of various countries or regions shall govern the conclusion, performance, and interpretation of this Agreement.",
+        "2. The parties shall resolve any disputes that may arise from this Agreement through amicable negotiation. The dispute will be submitted to the court of competent jurisdiction in the location of Party A if no agreement is reached through negotiation."
+      ]
+    },
+    {
+      "h": "Article 10 — Supplementary Provisions",
+      "items": [
+        "1. The validity of the remaining provisions of this Agreement shall not be impacted if any provision is found to be invalid or unenforceable.",
+        "2. This Agreement shall be fully effective upon the successful registration of the user and shall continue to be in effect indefinitely."
+      ]
+    }
+  ]
+}
