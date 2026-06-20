@@ -42,7 +42,7 @@ export default function OrderDetail() {
   if (!order) return (
     <div className="container narrow section">
       <Result status="404" title={error || t('order.notFound')}
-        extra={<Link to="/dashboard"><Button type="primary">{t('order.backToOrders')}</Button></Link>} />
+        extra={<Link to="/videos"><Button type="primary">{t('order.backToOrders')}</Button></Link>} />
     </div>
   )
 
@@ -57,7 +57,7 @@ export default function OrderDetail() {
 
   return (
     <div className="container narrow section">
-      <Link to="/dashboard" className="link">{t('order.backToOrders')}</Link>
+      <Link to="/videos" className="link">{t('order.backToOrders')}</Link>
       <Card style={{ marginTop: 12 }}
         title={<Space>{order.packageName}<Tag color={TAG_COLOR[order.status]}>{t(STATUS_KEY[order.status])}</Tag></Space>}>
         {error && <Alert type="error" showIcon message={error} style={{ marginBottom: 16 }} />}

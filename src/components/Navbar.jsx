@@ -1,16 +1,13 @@
 import { useState } from 'react'
-import { Link, NavLink, useNavigate } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { Button } from 'antd'
 import { MenuOutlined } from '@ant-design/icons'
-import { useAuth } from '../store/auth.jsx'
 import LanguageMenu from './LanguageMenu.jsx'
 import SideDrawer from './SideDrawer.jsx'
 
 export default function Navbar() {
-  const { user } = useAuth()
   const { t } = useTranslation()
-  const navigate = useNavigate()
   const [drawerOpen, setDrawerOpen] = useState(false)
 
   return (
@@ -29,9 +26,6 @@ export default function Navbar() {
 
         <div className="topbar-right">
           <LanguageMenu />
-          {user && (
-            <Button className="desktop-only" onClick={() => navigate('/account')}>{t('nav.myPage')}</Button>
-          )}
           <Button type="text" icon={<MenuOutlined />} aria-label={t('menu.menu')} onClick={() => setDrawerOpen(true)} />
         </div>
       </div>

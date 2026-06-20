@@ -20,7 +20,7 @@ export default function Login() {
       await login(values)
       // Re-arm the home announcement so it greets the user right after login.
       try { sessionStorage.removeItem('cv_home_ann_seen') } catch { /* noop */ }
-      navigate(location.state?.from || '/dashboard', { replace: true })
+      navigate(location.state?.from || '/videos', { replace: true })
     } catch (err) {
       setError(err.message || 'Login failed')
     } finally {

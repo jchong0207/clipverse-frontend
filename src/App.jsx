@@ -17,7 +17,6 @@ const loaders = {
   About: () => import('./pages/About.jsx'),
   Promotion: () => import('./pages/Promotion.jsx'),
   Videos: () => import('./pages/Videos.jsx'),
-  Dashboard: () => import('./pages/Dashboard.jsx'),
   OrderDetail: () => import('./pages/OrderDetail.jsx'),
   Account: () => import('./pages/Account.jsx'),
   ProductAds: () => import('./pages/ProductAds.jsx'),
@@ -39,7 +38,6 @@ const loaders = {
 const About = lazy(loaders.About)
 const Promotion = lazy(loaders.Promotion)
 const Videos = lazy(loaders.Videos)
-const Dashboard = lazy(loaders.Dashboard)
 const OrderDetail = lazy(loaders.OrderDetail)
 const Account = lazy(loaders.Account)
 const ProductAds = lazy(loaders.ProductAds)
@@ -93,7 +91,6 @@ export default function App() {
           {/* Authenticated app pages — require login */}
           <Route path="/promotion" element={<ProtectedRoute><Promotion /></ProtectedRoute>} />
           <Route path="/videos" element={<ProtectedRoute><Videos /></ProtectedRoute>} />
-          <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
           <Route path="/orders/:id" element={<ProtectedRoute><OrderDetail /></ProtectedRoute>} />
           <Route path="/account" element={<ProtectedRoute><Account /></ProtectedRoute>} />
           <Route path="/product-ads" element={<ProtectedRoute><ProductAds /></ProtectedRoute>} />

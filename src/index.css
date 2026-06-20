@@ -775,7 +775,6 @@ a { color: var(--accent-dark); text-decoration: none; }
 .nav-links { display: none; align-items: center; gap: 1.25rem; margin-left: 1.25rem; }
 .nav-links a { color: var(--muted); font-weight: 600; font-size: 0.95rem; }
 .nav-links a.active { color: var(--accent-dark); }
-.desktop-only { display: none; }
 
 /* Buttons */
 .btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem; border: 1px solid transparent;
@@ -941,7 +940,6 @@ a.list-item:active { transform: scale(0.995); }
   /* Bottom tab bar is mobile-only; desktop uses the top nav */
   .tabbar { display: none; }
   .nav-links { display: flex; }
-  .desktop-only { display: inline-flex; }
 
   /* Orders/transactions: cards on mobile, tables on desktop */
   .only-desktop { display: block; }
