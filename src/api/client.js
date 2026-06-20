@@ -22,18 +22,40 @@ async function http(path, { method = 'GET', body, isForm = false } = {}) {
   }
   const res = await fetch(`${BASE}${path}`, { method, headers, body: payload })
   const text = await res.text()
-  const data = text ? JSON.parse(text) : null
+  const envelope = text ? JSON.parse(text) : null
   if (!res.ok) {
-    throw { status: res.status, message: data?.message || res.statusText }
+    throw { status: res.status, message: envelope?.msg || res.statusText }
   }
-  return data
+  if (envelope && envelope.code !== 0) {
+    throw { status: res.status, message: envelope.msg || 'Request failed' }
+  }
+  return envelope ? envelope.data : null
 }
 
 // ---- Real backend implementation ----
 const realApi = {
-  register: (b) => http('/api/auth/register', { method: 'POST', body: b }),
-  login: (b) => http('/api/auth/login', { method: 'POST', body: b }),
-  me: () => http('/api/auth/me'),
+  async register(b) {
+    const r = await http('/app-api/member/auth/register', {
+      method: 'POST',
+      body: { email: b.email, password: b.password, nickname: b.name },
+    })
+    setToken(r.accessToken)
+    const user = await realApi.me()
+    return { token: r.accessToken, user }
+  },
+  async login(b) {
+    const r = await http('/app-api/member/auth/login', {
+      method: 'POST',
+      body: { email: b.email, password: b.password },
+    })
+    setToken(r.accessToken)
+    const user = await realApi.me()
+    return { token: r.accessToken, user }
+  },
+  async me() {
+    const u = await http('/app-api/member/user/get')
+    return { id: u.id, name: u.nickname, email: u.email, creditBalance: u.creditBalance }
+  },
   logout: async () => ({}),
   listPackages: () => http('/api/packages'),
   getWallet: () => http('/api/wallet'),
