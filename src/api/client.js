@@ -4,8 +4,12 @@
 
 import { mockApi } from './mock.js'
 
-const BASE = import.meta.env.VITE_API_URL || ''
-const USE_REAL = Boolean(BASE)
+// USE_REAL switches to the Spring Boot backend when VITE_API_URL is set. Requests stay
+// RELATIVE (empty BASE) so in dev they hit the Vite origin and are proxied to the backend
+// (see vite.config.js) — same-origin, no CORS. In production, serve the app behind a reverse
+// proxy that forwards /app-api (and /api) to the backend, keeping requests same-origin there too.
+const USE_REAL = Boolean(import.meta.env.VITE_API_URL)
+const BASE = ''
 
 const TOKEN_KEY = 'ct_token'
 export const getToken = () => localStorage.getItem(TOKEN_KEY)
@@ -54,7 +58,15 @@ const realApi = {
   },
   async me() {
     const u = await http('/app-api/member/user/get')
-    return { id: u.id, name: u.nickname, email: u.email, creditBalance: u.creditBalance, kycStatus: u.kycStatus || 'unverified' }
+    return {
+      id: u.id,
+      uid: u.uid,
+      name: u.nickname,
+      email: u.email,
+      creditBalance: u.creditBalance,
+      walletBalance: u.walletBalance,
+      kycStatus: u.kycStatus || 'unverified',
+    }
   },
   logout: async () => ({}),
   submitKyc: (b) => http('/app-api/member/user/kyc', { method: 'POST', body: b }),

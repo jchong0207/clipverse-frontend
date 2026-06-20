@@ -15,6 +15,15 @@ function maskId(user) {
   return s.length > 7 ? `${s.slice(0, 3)}****${s.slice(-4)}` : s
 }
 
+// Format a wallet balance (number or numeric string) with thousands separators and 2 decimals.
+// Falls back to the demo placeholder when no balance is available (standalone mock mode).
+function formatBalance(value) {
+  if (value === null || value === undefined || value === '') return '115,486.71'
+  const n = Number(value)
+  if (Number.isNaN(n)) return '115,486.71'
+  return n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+}
+
 // 👉 Data Overview cards. (Product Orders intentionally omitted.)
 const STATS = [
   { key: 'deliveryLog', value: 0, icon: <SendOutlined />, to: '/deploy-history' },
@@ -30,7 +39,8 @@ export default function Account() {
 
   const idText = maskId(user)
   const credit = user?.creditBalance ?? 51
-  const uid = user?.id ?? '0470508'
+  const uid = user?.uid ?? user?.id ?? '0470508'
+  const balance = formatBalance(user?.walletBalance)
   const kycStatus = user?.kycStatus || 'unverified'
 
   const copyUid = async () => {
@@ -49,7 +59,7 @@ export default function Account() {
           </div>
         </div>
         <div className="mp-balance-label">{t('account.balance')}</div>
-        <div className="mp-balance">115,486.71</div>
+        <div className="mp-balance">{balance}</div>
       </div>
 
       <div className="mp-body">

@@ -22,7 +22,7 @@ export default function SideDrawer({ open, onClose }) {
 
   const idText = maskId(user)
   const credit = user?.creditBalance ?? 51
-  const uid = user?.id ?? '0470508'
+  const uid = user?.uid ?? user?.id ?? '0470508'
   const langLabel = LANGUAGES.find((l) => l.code === i18n.resolvedLanguage)?.label || 'English'
 
   const onLogin = () => { onClose(); navigate('/login', { state: { from: '/' } }) }
