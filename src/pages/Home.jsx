@@ -29,6 +29,17 @@ export default function Home() {
   // Optional licensed background video at /public/assets/video/hero.mp4; falls back to animated CSS water.
   const [showVideo, setShowVideo] = useState(true)
   const rootRef = useRef(null)
+  const heroVideoRef = useRef(null)
+
+  // Kick off muted autoplay explicitly. The autoPlay attribute alone can be blocked on a cold
+  // first load (e.g. landing logged-out with no prior gesture); if play() is rejected, drop the
+  // video element so the CSS water animation behind it shows instead of a blank/frozen frame.
+  useEffect(() => {
+    const v = heroVideoRef.current
+    if (!v) return
+    const p = v.play?.()
+    if (p && typeof p.catch === 'function') p.catch(() => setShowVideo(false))
+  }, [])
 
   // Scroll-reveal: fade/slide elements in as they enter the viewport.
   useEffect(() => {
@@ -47,7 +58,8 @@ export default function Home() {
 
       <section className="lp-hero">
         {showVideo && (
-          <video className="lp-hero-video" autoPlay muted loop playsInline preload="auto" onError={() => setShowVideo(false)}>
+          <video ref={heroVideoRef} className="lp-hero-video" autoPlay muted loop playsInline
+            preload="auto" onError={() => setShowVideo(false)}>
             <source src="/assets/video/hero.mp4" type="video/mp4" />
           </video>
         )}
