@@ -26,7 +26,12 @@ async function http(path, { method = 'GET', body, isForm = false } = {}) {
   }
   const res = await fetch(`${BASE}${path}`, { method, headers, body: payload })
   const text = await res.text()
-  const envelope = text ? JSON.parse(text) : null
+  let envelope = null
+  try {
+    envelope = text ? JSON.parse(text) : null
+  } catch {
+    envelope = null
+  }
   if (!res.ok) {
     throw { status: res.status, message: envelope?.msg || res.statusText }
   }
@@ -55,8 +60,8 @@ const realApi = {
       // code is sent but not yet verified server-side (real email OTP arrives in a later phase).
       body: { email: b.email, password: b.password, nickname: b.name, code: b.code },
     })
-    setToken(r.accessToken)
-    // The backend returns the profile inline (r.user), so no second user/get call is needed.
+    // Token is stored by the outer api.register wrapper. The backend returns the profile inline
+    // (r.user), so no second user/get call is needed.
     return { token: r.accessToken, user: mapUser(r.user) }
   },
   async login(b) {
@@ -64,8 +69,8 @@ const realApi = {
       method: 'POST',
       body: { email: b.email, password: b.password },
     })
-    setToken(r.accessToken)
-    // The backend returns the profile inline (r.user), so no second user/get call is needed.
+    // Token is stored by the outer api.login wrapper. The backend returns the profile inline
+    // (r.user), so no second user/get call is needed.
     return { token: r.accessToken, user: mapUser(r.user) }
   },
   async me() {

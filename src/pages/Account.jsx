@@ -2,18 +2,11 @@ import { App } from 'antd'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useAuth } from '../store/auth.jsx'
+import { maskId } from '../utils/user.js'
 import {
   CopyOutlined, SendOutlined, ForwardOutlined, BarChartOutlined, CodeSandboxOutlined, IdcardOutlined,
   SafetyCertificateOutlined, SwapOutlined, FileTextOutlined, RightOutlined,
 } from '@ant-design/icons'
-
-function maskId(user) {
-  const v = user && (user.phone || user.email || user.name)
-  if (!v) return '209****4552'
-  if (v.includes('@')) { const [n, d] = v.split('@'); return `${n.slice(0, 2)}***@${d}` }
-  const s = String(v)
-  return s.length > 7 ? `${s.slice(0, 3)}****${s.slice(-4)}` : s
-}
 
 // Format a wallet balance (number or numeric string) with thousands separators and 2 decimals.
 // Falls back to the demo placeholder when no balance is available (standalone mock mode).
