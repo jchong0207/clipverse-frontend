@@ -36,6 +36,17 @@ async function http(path, { method = 'GET', body, isForm = false } = {}) {
   return envelope ? envelope.data : null
 }
 
+// Map the backend member shape -> the UI's user shape (nickname -> name).
+const mapUser = (u) => ({
+  id: u.id,
+  uid: u.uid,
+  name: u.nickname,
+  email: u.email,
+  creditBalance: u.creditBalance,
+  walletBalance: u.walletBalance,
+  kycStatus: u.kycStatus || 'unverified',
+})
+
 // ---- Real backend implementation ----
 const realApi = {
   async register(b) {
@@ -44,8 +55,8 @@ const realApi = {
       body: { email: b.email, password: b.password, nickname: b.name },
     })
     setToken(r.accessToken)
-    const user = await realApi.me()
-    return { token: r.accessToken, user }
+    // The backend returns the profile inline (r.user), so no second user/get call is needed.
+    return { token: r.accessToken, user: mapUser(r.user) }
   },
   async login(b) {
     const r = await http('/app-api/member/auth/login', {
@@ -53,20 +64,12 @@ const realApi = {
       body: { email: b.email, password: b.password },
     })
     setToken(r.accessToken)
-    const user = await realApi.me()
-    return { token: r.accessToken, user }
+    // The backend returns the profile inline (r.user), so no second user/get call is needed.
+    return { token: r.accessToken, user: mapUser(r.user) }
   },
   async me() {
     const u = await http('/app-api/member/user/get')
-    return {
-      id: u.id,
-      uid: u.uid,
-      name: u.nickname,
-      email: u.email,
-      creditBalance: u.creditBalance,
-      walletBalance: u.walletBalance,
-      kycStatus: u.kycStatus || 'unverified',
-    }
+    return mapUser(u)
   },
   logout: async () => ({}),
   submitKyc: (b) => http('/app-api/member/user/kyc', { method: 'POST', body: b }),
