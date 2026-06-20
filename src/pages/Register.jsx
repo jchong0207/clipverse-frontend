@@ -27,7 +27,12 @@ export default function Register() {
     setError('')
     setBusy(true)
     try {
-      await register({ name: values.email.split('@')[0], email: values.email, password: values.password })
+      await register({
+        name: values.email.split('@')[0],
+        email: values.email,
+        password: values.password,
+        code: values.code,
+      })
       try { sessionStorage.removeItem('cv_home_ann_seen') } catch { /* noop */ }
       navigate('/', { replace: true })
     } catch (err) {

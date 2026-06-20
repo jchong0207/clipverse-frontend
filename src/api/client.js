@@ -52,7 +52,8 @@ const realApi = {
   async register(b) {
     const r = await http('/app-api/member/auth/register', {
       method: 'POST',
-      body: { email: b.email, password: b.password, nickname: b.name },
+      // code is sent but not yet verified server-side (real email OTP arrives in a later phase).
+      body: { email: b.email, password: b.password, nickname: b.name, code: b.code },
     })
     setToken(r.accessToken)
     // The backend returns the profile inline (r.user), so no second user/get call is needed.
