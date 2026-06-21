@@ -19,6 +19,30 @@ npm run build      # production build → dist/
 npm run preview    # serve the production build locally
 ```
 
+With no extra config the app runs **standalone** against the in-browser mock backend (see [Demo accounts](#demo-accounts) below) — zero setup.
+
+## Run the full stack (with the real backend)
+
+To run against the real Spring Boot [backend](https://github.com/jchong0207/clipverse-backend) instead of the mock:
+
+1. **Start the backend** (in the backend repo) — it serves `http://localhost:8080`:
+   ```bash
+   ./mvnw spring-boot:run
+   ```
+2. **Point the frontend at it** by creating `.env.local` (see `.env.example`):
+   ```bash
+   # frontend/.env.local
+   VITE_API_URL=http://localhost:8080
+   ```
+3. **Start the frontend**:
+   ```bash
+   npm install && npm run dev      # http://localhost:5173
+   ```
+
+When `VITE_API_URL` is set, `src/api/client.js` switches from the mock to the real API automatically, and the Vite dev server proxies `/app-api` (and `/api`) to the backend — so the browser sees same-origin requests with no CORS setup. Open http://localhost:5173 and log in with the seeded backend account **`demo@clipverse.com` / `Demo1234`**, which comes preloaded with videos, deploy history, and notifications.
+
+> The demo accounts in the next section are the **mock** accounts (standalone mode). Against the real backend, use the backend's seeded accounts instead.
+
 ## Demo accounts
 
 Login is enabled and several demo accounts are seeded automatically, so you can sign in out of the box. Each one covers a different **KYC (identity verification) state**, so you can demo the whole verification flow without editing any data. **The password for every account is `Demo1234`.**
