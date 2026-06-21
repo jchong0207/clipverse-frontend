@@ -100,9 +100,9 @@ a { color: var(--accent-dark); text-decoration: none; }
 .vid-info { min-width: 0; flex: 1; display: flex; flex-direction: column; gap: 0.7rem; }
 .vid-title { font-weight: 700; font-size: 1.1rem; line-height: 1.35; color: var(--text);
   display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-.vid-meta { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; margin-top: auto; }
+.vid-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 0.6rem; margin-top: auto; }
 .vid-dur { flex: none; background: #4b5563; color: #fff; font-size: 0.85rem; font-weight: 600; padding: 0.22rem 0.55rem; border-radius: 6px; }
-.vid-lang { display: inline-flex; align-items: center; gap: 0.4rem; color: var(--text); font-weight: 600; min-width: 0; }
+.vid-lang { display: inline-flex; align-items: center; gap: 0.4rem; color: var(--text); font-weight: 600; min-width: 0; margin-left: auto; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .vid-lang .anticon { color: #1d4ed8; flex: none; }
 .vid-foot { margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; }
 .vid-promote.ant-btn { height: 46px; min-width: 152px; border-radius: 10px; font-weight: 700; font-size: 1rem;
@@ -593,18 +593,26 @@ a { color: var(--accent-dark); text-decoration: none; }
 
 /* ===== Review Content cards (reuses .dh-bar / .dh-tabs header) ===== */
 .rc-list { padding-bottom: 2rem; }
+/* Centered empty state: fill the viewport below the header + tabs (~7rem) so the
+   "no videos" message sits in the middle of the screen, not at the top-left. */
+.rc-empty { display: flex; align-items: center; justify-content: center; min-height: calc(100vh - 7rem); padding: 1rem; }
 .rc-card { padding: 1rem var(--gutter); border-bottom: 8px solid #f1f3f6; }
 .rc-card:last-child { border-bottom: none; }
 .rc-head { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; margin-bottom: 0.85rem; }
 .rc-date { color: var(--muted); font-size: 0.95rem; }
 .rc-badge { flex: none; background: #dcfce7; color: #166534; font-size: 0.82rem; font-weight: 600; padding: 0.25rem 0.7rem; border-radius: 7px; }
+/* Status-specific badge colors (Videos + ReviewContent): green=passed, amber=under review, red=rejected. */
+.rc-badge-passed, .vid-badge-passed { background: #dcfce7; color: #166534; }
+.rc-badge-underReview, .vid-badge-underReview { background: #fef3c7; color: #92400e; }
+.rc-badge-rejected, .vid-badge-rejected { background: #fee2e2; color: #991b1b; }
+.vid-badge { flex: none; font-size: 0.78rem; font-weight: 600; padding: 0.2rem 0.6rem; border-radius: 7px; white-space: nowrap; }
 .rc-body { display: flex; gap: 1rem; }
 .rc-thumb { width: 96px; height: 72px; border-radius: 8px; flex: none; background-size: cover; background-position: center; }
 .rc-info { min-width: 0; display: flex; flex-direction: column; gap: 0.55rem; }
 .rc-title { font-weight: 700; font-size: 1.02rem; line-height: 1.35; color: var(--text); }
-.rc-meta { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; }
+.rc-meta { display: flex; align-items: center; gap: 0.75rem; }
 .rc-dur { flex: none; background: #4b5563; color: #fff; font-size: 0.82rem; font-weight: 600; padding: 0.2rem 0.55rem; border-radius: 6px; }
-.rc-lang { display: inline-flex; align-items: center; gap: 0.4rem; color: var(--text); font-weight: 600; min-width: 0; }
+.rc-lang { display: inline-flex; align-items: center; gap: 0.4rem; color: var(--text); font-weight: 600; min-width: 0; margin-left: auto; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .rc-lang .anticon { color: #1d4ed8; flex: none; }
 
 /* ===== Import Video modal ===== */

@@ -1,14 +1,19 @@
 import { useRef, useState, useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { Button, App } from 'antd'
+import { Button, App, Empty } from 'antd'
 import {
   CloudUploadOutlined, GlobalOutlined, ProfileOutlined, UploadOutlined, DownOutlined,
   LinkOutlined, PlaySquareOutlined, CloseOutlined, CheckOutlined,
 } from '@ant-design/icons'
 import { api } from '../api/client.js'
+import { useVideos } from '../store/videos.jsx'
 
 const MAX_UPLOAD_SECS = 90 // uploads must be 90 seconds or shorter
+
+// Backend audit_status -> the review-tab key used for the status badge / i18n label.
+// Videos are only ever PENDING/PASSED/REJECTED; anything unexpected falls back to Under Review.
+const STATUS_MAP = { PENDING: 'underReview', PASSED: 'passed', REJECTED: 'rejected' }
 
 const fmt = (s) => {
   if (!s || !isFinite(s)) return '00:00'
@@ -41,9 +46,8 @@ export default function Videos() {
   const navigate = useNavigate()
   const location = useLocation()
   const { message } = App.useApp()
+  const { videos: rawVideos, addVideo } = useVideos()
   const fileRef = useRef(null)
-  const idRef = useRef(0)
-  const [videos, setVideos] = useState([])
 
   const [open, setOpen] = useState(false)
   const [tab, setTab] = useState('file') // 'link' | 'file'
@@ -62,13 +66,10 @@ export default function Videos() {
     id: v.id, title: v.title, duration: fmtDur(v.durationSeconds),
     language: v.targetLanguage || v.sourceLanguage || '', thumb: v.coverUrl
       || 'linear-gradient(135deg, #c3d3e2 0%, #7e96ad 55%, #d9534f 130%)',
+    status: STATUS_MAP[v.auditStatus] || 'underReview',
   })
-  useEffect(() => {
-    let active = true
-    api.listVideos().then((p) => { if (active) setVideos((p.items || []).map(mapVideo)) })
-      .catch(() => { /* leave empty on error */ })
-    return () => { active = false }
-  }, [])
+  // Display list derived from the shared in-memory cache (prefetched after login; no refetch here).
+  const videos = rawVideos.map(mapVideo)
 
   // Close the language dropdown when clicking outside it.
   useEffect(() => {
@@ -86,20 +87,19 @@ export default function Videos() {
     if (location.state?.openImport) setOpen(true)
   }, [location.key]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Read a picked video locally: add once metadata loads, upgrade thumbnail when a frame is grabbable.
+  // Read a picked video's duration locally (to enforce the length limit), then persist it
+  // server-side; the created record is added to the shared cache (server is the source of truth).
   const processFile = (f, finalTitle, language) => {
     const objUrl = URL.createObjectURL(f)
     const video = document.createElement('video')
     video.preload = 'metadata'
     video.muted = true
     video.src = objUrl
-    const id = `up-${idRef.current++}`
-    const gradient = 'linear-gradient(135deg, #a1c4fd 0%, #45aaf2 60%, #2d3436 130%)'
-    let added = false
-    const ensure = (duration) => {
-      if (added) return
-      added = true
-      setVideos((prev) => [{ id, title: finalTitle, duration, language, thumb: gradient }, ...prev])
+    const persist = (durationSeconds) => {
+      api.createVideo({
+        title: finalTitle, durationSeconds, sourceLanguage: 'auto',
+        targetLanguage: language, sourcePlatform: 'upload', fileUrl: f.name,
+      }).then(addVideo).catch(() => { /* noop */ })
     }
     video.onloadedmetadata = () => {
       if (isFinite(video.duration) && video.duration > MAX_UPLOAD_SECS) {
@@ -107,27 +107,10 @@ export default function Videos() {
         URL.revokeObjectURL(objUrl)
         return
       }
-      ensure(fmt(video.duration))
-      api.createVideo({
-        title: finalTitle, durationSeconds: Math.round(video.duration || 0), sourceLanguage: 'auto',
-        targetLanguage: language, sourcePlatform: 'upload', fileUrl: f.name,
-      }).then((created) => setVideos((prev) => [mapVideo(created), ...prev])).catch(() => { /* noop */ })
-      try { video.currentTime = Math.min(1, (video.duration || 2) / 2) } catch { /* noop */ }
-    }
-    video.onseeked = () => {
-      try {
-        const c = document.createElement('canvas')
-        const w = 320
-        const ratio = video.videoHeight / video.videoWidth || 0.7
-        c.width = w
-        c.height = Math.round(w * ratio)
-        c.getContext('2d').drawImage(video, 0, 0, c.width, c.height)
-        const thumb = `center / cover no-repeat url(${c.toDataURL('image/jpeg', 0.7)})`
-        setVideos((prev) => prev.map((v) => (v.id === id ? { ...v, thumb } : v)))
-      } catch { /* keep gradient */ }
+      persist(Math.round(video.duration || 0))
       URL.revokeObjectURL(objUrl)
     }
-    video.onerror = () => { ensure('00:00'); URL.revokeObjectURL(objUrl) }
+    video.onerror = () => { persist(0); URL.revokeObjectURL(objUrl) }
   }
 
   const onPick = (e) => {
@@ -162,7 +145,7 @@ export default function Videos() {
         title: finalTitle, durationSeconds: undefined, sourceLanguage: 'auto',
         targetLanguage: lang, sourcePlatform: 'link',
         sourceUrl: url, fileUrl: undefined,
-      }).then((created) => setVideos((prev) => [mapVideo(created), ...prev])).catch(() => { /* noop */ })
+      }).then(addVideo).catch(() => { /* noop */ })
     }
     close()
   }
@@ -178,6 +161,17 @@ export default function Videos() {
         <Button className="vid-review" icon={<ProfileOutlined />} onClick={() => navigate('/review-content')}>{t('video.reviewContent')}</Button>
       </div>
 
+      {videos.length === 0 && (
+        <Empty
+          description={
+            <span className="muted">
+              {t('video.noVideos')}<br />{t('video.noVideosHint')}
+            </span>
+          }
+          style={{ padding: '3rem 0' }}
+        />
+      )}
+
       <div className="vid-list">
         {videos.map((v) => (
           <div className="vid-card" key={v.id}>
@@ -187,6 +181,7 @@ export default function Videos() {
                 <div className="vid-title">{v.title}</div>
                 <div className="vid-meta">
                   <span className="vid-dur">{v.duration}</span>
+                  <span className={`vid-badge vid-badge-${v.status}`}>{t(`video.review.${v.status}`)}</span>
                   <span className="vid-lang"><GlobalOutlined /> {v.language}</span>
                 </div>
               </div>

@@ -151,6 +151,8 @@
     "maxLen": "Up to 90 seconds.",
     "tooLong": "Video must be 90 seconds or shorter.",
     "cannotRead": "Sorry, we couldn't read that video file.",
+    "noVideos": "No videos uploaded yet.",
+    "noVideosHint": "Tap \"Import Video\" to add your first one.",
     "review": {
       "all": "All",
       "underReview": "Under Review",
