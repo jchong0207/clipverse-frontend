@@ -24,7 +24,7 @@ export default function KycStatus() {
 
   const pending = status === 'pending'
   return (
-    <div className={`kyc ${pending ? 'kyc-pending' : ''}`}>
+    <div className="kyc">
       <div className="kyc-card">
         <div className={`kyc-check ${pending ? 'pending' : ''}`}>
           {pending ? <ClockCircleOutlined /> : <CheckOutlined />}

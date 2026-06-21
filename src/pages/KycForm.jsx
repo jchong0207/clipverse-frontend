@@ -1,6 +1,5 @@
 import { useRef, useState } from 'react'
 import SubPageHeader from '../components/SubPageHeader.jsx'
-import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { App, Dropdown } from 'antd'
 import { DownOutlined, SafetyCertificateFilled, CheckCircleFilled, CloseCircleFilled } from '@ant-design/icons'
@@ -33,7 +32,6 @@ const SLOTS = ['front', 'back', 'handheld']
 
 export default function KycForm({ onSubmitted }) {
   const { t } = useTranslation()
-  const navigate = useNavigate()
   const { message } = App.useApp()
   const fileRefs = { front: useRef(null), back: useRef(null), handheld: useRef(null) }
 
@@ -56,7 +54,7 @@ export default function KycForm({ onSubmitted }) {
     }
     setSubmitting(true)
     try {
-      await onSubmitted?.({ country: country.name, docType })
+      await onSubmitted?.({ country: country.code, docType })
       message.success(t('kyc.form.submitted'))
     } catch {
       message.error(t('kyc.form.failed'))
