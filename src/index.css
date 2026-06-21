@@ -557,6 +557,7 @@ a { color: var(--accent-dark); text-decoration: none; }
 .nt-unread .nt-title { font-weight: 700; }
 .nt-unread .nt-title::before { content: ""; display: inline-block; width: 7px; height: 7px; margin-right: 0.5rem; border-radius: 50%; background: #ef4444; vertical-align: middle; }
 /* Notification detail (bottom-sheet drawer): type badge, title, created time, message body. */
+.nt-drawer .ant-drawer-content { border-top-left-radius: 18px; border-top-right-radius: 18px; overflow: hidden; }
 .nt-drawer .ant-drawer-body { padding: 1.25rem 1.4rem 2rem; }
 /* align-items:flex-start keeps the type badge compact (sized to content) like the list;
    the text rows are set to full width so long titles/messages still fill the sheet. */
