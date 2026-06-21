@@ -724,7 +724,9 @@ a { color: var(--accent-dark); text-decoration: none; }
 .dh-status-rejected { background: #fef2f2; color: #dc2626; }
 
 .dh-card-body { display: flex; gap: 1rem; }
-.dh-thumb { width: 132px; height: 92px; border-radius: 10px; flex: none; background-size: cover; background-position: center; }
+.dh-thumb { width: 132px; height: 92px; border-radius: 10px; flex: none; background-size: cover; background-position: center; object-fit: cover; }
+/* Fallback gradient when a deploy record has no cover image (so the card never shows a blank box). */
+.dh-thumb-placeholder { background: linear-gradient(135deg, #c3d3e2 0%, #7e96ad 55%, #45aaf2 130%); }
 .dh-info { min-width: 0; display: flex; flex-direction: column; gap: 0.7rem; }
 .dh-title { font-weight: 700; font-size: 1.05rem; line-height: 1.35; color: var(--text); }
 .dh-stats { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem 1rem; color: var(--text); font-weight: 700; }
