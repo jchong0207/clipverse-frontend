@@ -111,7 +111,12 @@
     "kyc": "KYC",
     "verified": "Disahkan",
     "revenueHistory": "Sejarah Pendapatan",
-    "transactionHistory": "Sejarah Transaksi"
+    "transactionHistory": "Sejarah Transaksi",
+    "kycStatus": {
+      "unverified": "Belum disahkan",
+      "pending": "Dalam semakan",
+      "verified": "Disahkan"
+    }
   },
   "promotion": {
     "title": "Pakej Akaun",
@@ -179,7 +184,36 @@
   "kyc": {
     "title": "Disahkan",
     "desc": "Identiti anda telah berjaya disahkan",
-    "return": "Kembali"
+    "return": "Kembali",
+    "pending": {
+      "title": "Dalam Semakan",
+      "desc": "Maklumat identiti anda telah dihantar dan sedang disemak. Biasanya mengambil masa 1–3 hari bekerja."
+    },
+    "form": {
+      "title": "Pengesahan Identiti",
+      "heading": "Pengesahan Nama Sebenar",
+      "country": "Negara",
+      "docType": "Jenis Dokumen",
+      "docTypes": {
+        "idCard": "Kad Pengenalan",
+        "passport": "Pasport",
+        "driverLicense": "Lesen Memandu"
+      },
+      "photos": "Foto Dokumen",
+      "photosHint": "Sila muat naik foto dokumen anda",
+      "slots": {
+        "front": "Depan",
+        "back": "Belakang",
+        "handheld": "Memegang Dokumen"
+      },
+      "requirements": "Keperluan Semakan",
+      "requirementsHint": "Bingkai lengkap; kecerahan sekata; fokus tajam",
+      "submit": "Hantar",
+      "submitting": "Menghantar…",
+      "submitted": "Dihantar untuk semakan",
+      "failed": "Penghantaran gagal, sila cuba lagi",
+      "uploadAll": "Sila muat naik ketiga-tiga foto dokumen"
+    }
   },
   "change": {
     "title": "Rekod Perubahan",

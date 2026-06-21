@@ -111,7 +111,12 @@
     "kyc": "KYC",
     "verified": "Đã xác minh",
     "revenueHistory": "Lịch sử doanh thu",
-    "transactionHistory": "Lịch sử giao dịch"
+    "transactionHistory": "Lịch sử giao dịch",
+    "kycStatus": {
+      "unverified": "Chưa xác minh",
+      "pending": "Đang xét duyệt",
+      "verified": "Đã xác minh"
+    }
   },
   "promotion": {
     "title": "Gói tài khoản",
@@ -179,7 +184,36 @@
   "kyc": {
     "title": "Đã ủy quyền",
     "desc": "Danh tính của bạn đã được xác minh thành công",
-    "return": "Quay lại"
+    "return": "Quay lại",
+    "pending": {
+      "title": "Đang xét duyệt",
+      "desc": "Thông tin danh tính của bạn đã được gửi và đang được xét duyệt. Việc này thường mất 1–3 ngày làm việc."
+    },
+    "form": {
+      "title": "Xác minh danh tính",
+      "heading": "Xác minh tên thật",
+      "country": "Quốc gia",
+      "docType": "Loại giấy tờ",
+      "docTypes": {
+        "idCard": "Chứng minh nhân dân",
+        "passport": "Hộ chiếu",
+        "driverLicense": "Giấy phép lái xe"
+      },
+      "photos": "Ảnh giấy tờ",
+      "photosHint": "Vui lòng tải lên ảnh giấy tờ của bạn",
+      "slots": {
+        "front": "Mặt trước",
+        "back": "Mặt sau",
+        "handheld": "Cầm giấy tờ"
+      },
+      "requirements": "Yêu cầu xét duyệt",
+      "requirementsHint": "Viền đầy đủ; độ sáng đồng đều; lấy nét rõ",
+      "submit": "Gửi",
+      "submitting": "Đang gửi…",
+      "submitted": "Đã gửi để xét duyệt",
+      "failed": "Gửi không thành công, vui lòng thử lại",
+      "uploadAll": "Vui lòng tải lên cả ba ảnh giấy tờ"
+    }
   },
   "change": {
     "title": "Lịch sử thay đổi",

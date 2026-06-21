@@ -111,7 +111,12 @@
     "kyc": "KYC",
     "verified": "Verificado",
     "revenueHistory": "Historial de ingresos",
-    "transactionHistory": "Historial de transacciones"
+    "transactionHistory": "Historial de transacciones",
+    "kycStatus": {
+      "unverified": "No verificado",
+      "pending": "En revisión",
+      "verified": "Verificado"
+    }
   },
   "promotion": {
     "title": "Paquete de cuenta",
@@ -179,7 +184,36 @@
   "kyc": {
     "title": "Autorizado",
     "desc": "Tu identidad se ha verificado correctamente",
-    "return": "Volver"
+    "return": "Volver",
+    "pending": {
+      "title": "En revisión",
+      "desc": "Tu información de identidad se ha enviado y está en revisión. Esto suele tardar de 1 a 3 días hábiles."
+    },
+    "form": {
+      "title": "Verificación de identidad",
+      "heading": "Verificación de nombre real",
+      "country": "País",
+      "docType": "Tipo de documento",
+      "docTypes": {
+        "idCard": "Documento de identidad",
+        "passport": "Pasaporte",
+        "driverLicense": "Licencia de conducir"
+      },
+      "photos": "Fotos del documento",
+      "photosHint": "Sube las fotos de tu documento",
+      "slots": {
+        "front": "Anverso",
+        "back": "Reverso",
+        "handheld": "Documento en mano"
+      },
+      "requirements": "Requisitos de revisión",
+      "requirementsHint": "Bordes completos; brillo uniforme; enfoque nítido",
+      "submit": "Enviar",
+      "submitting": "Enviando…",
+      "submitted": "Enviado para revisión",
+      "failed": "Error al enviar, inténtalo de nuevo",
+      "uploadAll": "Sube las tres fotos del documento"
+    }
   },
   "change": {
     "title": "Registros de cambios",

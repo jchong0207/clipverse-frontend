@@ -111,7 +111,12 @@
     "kyc": "KYC",
     "verified": "Terverifikasi",
     "revenueHistory": "Riwayat Pendapatan",
-    "transactionHistory": "Riwayat Transaksi"
+    "transactionHistory": "Riwayat Transaksi",
+    "kycStatus": {
+      "unverified": "Belum terverifikasi",
+      "pending": "Dalam peninjauan",
+      "verified": "Terverifikasi"
+    }
   },
   "promotion": {
     "title": "Paket Akun",
@@ -179,7 +184,36 @@
   "kyc": {
     "title": "Disahkan",
     "desc": "Identitas Anda telah berhasil diverifikasi",
-    "return": "Kembali"
+    "return": "Kembali",
+    "pending": {
+      "title": "Dalam Peninjauan",
+      "desc": "Informasi identitas Anda telah dikirim dan sedang ditinjau. Biasanya memakan waktu 1–3 hari kerja."
+    },
+    "form": {
+      "title": "Verifikasi Identitas",
+      "heading": "Verifikasi Nama Asli",
+      "country": "Negara",
+      "docType": "Jenis Dokumen",
+      "docTypes": {
+        "idCard": "Kartu Identitas",
+        "passport": "Paspor",
+        "driverLicense": "SIM"
+      },
+      "photos": "Foto Dokumen",
+      "photosHint": "Silakan unggah foto dokumen Anda",
+      "slots": {
+        "front": "Depan",
+        "back": "Belakang",
+        "handheld": "Memegang Dokumen"
+      },
+      "requirements": "Persyaratan Peninjauan",
+      "requirementsHint": "Bingkai lengkap; kecerahan merata; fokus tajam",
+      "submit": "Kirim",
+      "submitting": "Mengirim…",
+      "submitted": "Dikirim untuk ditinjau",
+      "failed": "Gagal mengirim, silakan coba lagi",
+      "uploadAll": "Silakan unggah ketiga foto dokumen"
+    }
   },
   "change": {
     "title": "Catatan Perubahan",

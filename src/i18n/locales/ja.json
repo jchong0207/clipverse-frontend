@@ -111,7 +111,12 @@
     "kyc": "KYC",
     "verified": "認証済み",
     "revenueHistory": "収益履歴",
-    "transactionHistory": "取引履歴"
+    "transactionHistory": "取引履歴",
+    "kycStatus": {
+      "unverified": "未認証",
+      "pending": "審査中",
+      "verified": "認証済み"
+    }
   },
   "promotion": {
     "title": "アカウントパッケージ",
@@ -179,7 +184,36 @@
   "kyc": {
     "title": "認証済み",
     "desc": "本人確認が正常に完了しました",
-    "return": "戻る"
+    "return": "戻る",
+    "pending": {
+      "title": "審査中",
+      "desc": "本人確認情報を送信しました。現在審査中です。通常1〜3営業日かかります。"
+    },
+    "form": {
+      "title": "本人確認",
+      "heading": "実名認証",
+      "country": "国",
+      "docType": "書類の種類",
+      "docTypes": {
+        "idCard": "身分証明書",
+        "passport": "パスポート",
+        "driverLicense": "運転免許証"
+      },
+      "photos": "書類の写真",
+      "photosHint": "書類の写真をアップロードしてください",
+      "slots": {
+        "front": "表面",
+        "back": "裏面",
+        "handheld": "書類を持った写真"
+      },
+      "requirements": "審査要件",
+      "requirementsHint": "枠が完全；明るさが均一；ピントが鮮明",
+      "submit": "送信",
+      "submitting": "送信中…",
+      "submitted": "審査のため送信しました",
+      "failed": "送信に失敗しました。もう一度お試しください",
+      "uploadAll": "3枚すべての書類写真をアップロードしてください"
+    }
   },
   "change": {
     "title": "変動記録",
