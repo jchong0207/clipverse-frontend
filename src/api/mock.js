@@ -313,4 +313,17 @@ export const mockApi = {
     write(LS.orders, orders)
     return o
   },
+
+  async listVideos() {
+    await delay(120)
+    return { items: read('ct_videos', []), total: read('ct_videos', []).length, pageNo: 1, pageSize: 100 }
+  },
+  async createVideo(b) {
+    await delay()
+    const videos = read('ct_videos', [])
+    const v = { id: uid(), title: b.title, durationSeconds: b.durationSeconds || 0,
+      sourceLanguage: b.sourceLanguage, targetLanguage: b.targetLanguage, coverUrl: b.coverUrl,
+      sourcePlatform: b.sourcePlatform, auditStatus: 'PENDING', createTime: new Date().toISOString() }
+    videos.unshift(v); write('ct_videos', videos); return v
+  },
 }

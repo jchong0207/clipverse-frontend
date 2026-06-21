@@ -6,6 +6,7 @@ import {
   CloudUploadOutlined, GlobalOutlined, ProfileOutlined, UploadOutlined, DownOutlined,
   LinkOutlined, PlaySquareOutlined, CloseOutlined, CheckOutlined,
 } from '@ant-design/icons'
+import { api } from '../api/client.js'
 
 const MAX_UPLOAD_SECS = 90 // uploads must be 90 seconds or shorter
 
@@ -15,13 +16,6 @@ const fmt = (s) => {
   const sec = Math.floor(s % 60)
   return `${String(m).padStart(2, '0')}:${String(sec).padStart(2, '0')}`
 }
-
-// 👉 EDIT THIS: seed list shown before any upload. `thumb` is any CSS background.
-const SEED = [
-  { id: 'v1', title: '去了日本才知道🇯🇵動漫不是假的😲', duration: '00:44', language: 'Traditional Chinese', thumb: 'linear-gradient(135deg, #c3d3e2 0%, #7e96ad 55%, #d9534f 130%)' },
-  { id: 'v2', title: '🇰🇷그가 너를 차갑게 만들었다면, 차라리 한국에 와라', duration: '00:23', language: 'Korean', thumb: 'linear-gradient(135deg, #f6d365 0%, #3aa0a0 60%, #2d3436 130%)' },
-  { id: 'v3', title: '街頭美食大挑戰 🍜 一天吃十家', duration: '01:02', language: 'Simplified Chinese', thumb: 'linear-gradient(135deg, #fda085 0%, #f6d365 60%, #b91c1c 130%)' },
-]
 
 const LANGS = [
   'English', 'Korean', 'Japanese', 'Thai', 'Vietnamese', 'Spanish', 'Indonesian', 'Traditional Chinese',
@@ -49,7 +43,7 @@ export default function Videos() {
   const { message } = App.useApp()
   const fileRef = useRef(null)
   const idRef = useRef(0)
-  const [videos, setVideos] = useState(SEED)
+  const [videos, setVideos] = useState([])
 
   const [open, setOpen] = useState(false)
   const [tab, setTab] = useState('file') // 'link' | 'file'
@@ -59,6 +53,22 @@ export default function Videos() {
   const [file, setFile] = useState(null)
   const [langOpen, setLangOpen] = useState(false)
   const langRef = useRef(null)
+
+  const fmtDur = (secs) => {
+    const s = Math.max(0, Math.round(secs || 0))
+    return `${String(Math.floor(s / 60)).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}`
+  }
+  const mapVideo = (v) => ({
+    id: v.id, title: v.title, duration: fmtDur(v.durationSeconds),
+    language: v.targetLanguage || v.sourceLanguage || '', thumb: v.coverUrl
+      || 'linear-gradient(135deg, #c3d3e2 0%, #7e96ad 55%, #d9534f 130%)',
+  })
+  useEffect(() => {
+    let active = true
+    api.listVideos().then((p) => { if (active) setVideos((p.items || []).map(mapVideo)) })
+      .catch(() => { /* leave empty on error */ })
+    return () => { active = false }
+  }, [])
 
   // Close the language dropdown when clicking outside it.
   useEffect(() => {
@@ -98,6 +108,10 @@ export default function Videos() {
         return
       }
       ensure(fmt(video.duration))
+      api.createVideo({
+        title: finalTitle, durationSeconds: Math.round(video.duration || 0), sourceLanguage: 'auto',
+        targetLanguage: language, sourcePlatform: 'upload', fileUrl: f.name,
+      }).then((created) => setVideos((prev) => [mapVideo(created), ...prev])).catch(() => { /* noop */ })
       try { video.currentTime = Math.min(1, (video.duration || 2) / 2) } catch { /* noop */ }
     }
     video.onseeked = () => {
@@ -142,12 +156,13 @@ export default function Videos() {
     if (tab === 'file') {
       processFile(file, title.trim() || file.name.replace(/\.[^.]+$/, ''), lang)
     } else {
-      let name = title.trim()
-      if (!name) { try { name = new URL(url).hostname.replace(/^www\./, '') } catch { name = url.trim() } }
-      setVideos((prev) => [{
-        id: `link-${idRef.current++}`, title: name, duration: '00:00', language: lang,
-        thumb: 'linear-gradient(135deg, #c3d3e2 0%, #7e96ad 55%, #d9534f 130%)',
-      }, ...prev])
+      let finalTitle = title.trim()
+      if (!finalTitle) { try { finalTitle = new URL(url).hostname.replace(/^www\./, '') } catch { finalTitle = url.trim() } }
+      api.createVideo({
+        title: finalTitle, durationSeconds: undefined, sourceLanguage: 'auto',
+        targetLanguage: lang, sourcePlatform: 'link',
+        sourceUrl: url, fileUrl: undefined,
+      }).then((created) => setVideos((prev) => [mapVideo(created), ...prev])).catch(() => { /* noop */ })
     }
     close()
   }

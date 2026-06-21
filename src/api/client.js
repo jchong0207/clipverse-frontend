@@ -91,6 +91,13 @@ const realApi = {
   getOrder: (id) => http(`/api/orders/${id}`),
   payOrder: (id) => http(`/api/orders/${id}/pay`, { method: 'POST' }),
   cancelOrder: (id) => http(`/api/orders/${id}/cancel`, { method: 'POST' }),
+  async listVideos(status) {
+    const q = status ? `?status=${encodeURIComponent(status)}&pageSize=100` : '?pageSize=100'
+    return http(`/app-api/member/video/page${q}`)
+  },
+  async createVideo(body) {
+    return http('/app-api/member/video/create', { method: 'POST', body })
+  },
 }
 
 const impl = USE_REAL ? realApi : mockApi

@@ -1,16 +1,11 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import SubPageHeader from '../components/SubPageHeader.jsx'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { GlobalOutlined } from '@ant-design/icons'
+import { api } from '../api/client.js'
 
-// 👉 EDIT THIS: review records. `status` is one of underReview | passed | rejected.
-const RECORDS = [
-  { id: 'rc1', date: '02/05/2026 15:55:34', status: 'passed', title: '去了日本才知道🇯🇵動漫不是假的😲', duration: '00:44', language: 'Traditional Chinese', thumb: 'linear-gradient(135deg, #c3d3e2 0%, #7e96ad 55%, #d9534f 130%)' },
-  { id: 'rc2', date: '01/05/2026 17:22:35', status: 'underReview', title: '🇰🇷그가 너를 차갑게 만들었다면, 차라리 한국에 와라', duration: '00:23', language: 'Korean', thumb: 'linear-gradient(135deg, #f6d365 0%, #3aa0a0 60%, #2d3436 130%)' },
-  { id: 'rc3', date: '25/04/2026 16:22:13', status: 'passed', title: '泰國🇹🇭美女 會不會讓你心動💗', duration: '00:20', language: 'Thai', thumb: 'linear-gradient(135deg, #fda085 0%, #f6d365 60%, #b91c1c 130%)' },
-  { id: 'rc4', date: '21/04/2026 09:10:02', status: 'rejected', title: '街頭美食大挑戰 🍜 一天吃十家', duration: '01:02', language: 'Simplified Chinese', thumb: 'linear-gradient(135deg, #a1c4fd 0%, #45aaf2 60%, #2d3436 130%)' },
-]
+const STATUS_MAP = { PENDING: 'underReview', PASSED: 'passed', REJECTED: 'rejected', IMPORTED: 'passed' }
 
 const TABS = ['all', 'underReview', 'passed', 'rejected']
 
@@ -18,8 +13,24 @@ export default function ReviewContent() {
   const { t } = useTranslation()
   const navigate = useNavigate()
   const [tab, setTab] = useState('all')
+  const [records, setRecords] = useState([])
 
-  const records = tab === 'all' ? RECORDS : RECORDS.filter((r) => r.status === tab)
+  useEffect(() => {
+    let active = true
+    api.listVideos().then((p) => {
+      if (!active) return
+      setRecords((p.items || []).map((v) => ({
+        id: v.id, status: STATUS_MAP[v.auditStatus] || 'underReview', title: v.title,
+        date: v.createTime ? String(v.createTime).replace('T', ' ').slice(0, 19) : '',
+        duration: `${String(Math.floor((v.durationSeconds || 0) / 60)).padStart(2, '0')}:${String((v.durationSeconds || 0) % 60).padStart(2, '0')}`,
+        language: v.targetLanguage || v.sourceLanguage || '',
+        thumb: v.coverUrl || 'linear-gradient(135deg, #c3d3e2 0%, #7e96ad 55%, #d9534f 130%)',
+      })))
+    }).catch(() => { /* leave empty */ })
+    return () => { active = false }
+  }, [])
+
+  const shown = tab === 'all' ? records : records.filter((r) => r.status === tab)
 
   return (
     <div className="dh">
@@ -34,7 +45,7 @@ export default function ReviewContent() {
       </nav>
 
       <div className="rc-list">
-        {records.map((r) => (
+        {shown.map((r) => (
           <article className="rc-card" key={r.id}>
             <div className="rc-head">
               <span className="rc-date">{r.date}</span>
