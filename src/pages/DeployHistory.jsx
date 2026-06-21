@@ -6,70 +6,52 @@ import { App } from 'antd'
 import {
   CopyOutlined, PlayCircleFilled, DollarCircleFilled, GlobalOutlined,
 } from '@ant-design/icons'
+import { useDeploys } from '../store/deploys.jsx'
 
-// 👉 Platforms shown in the "intelligent match" row — real logos bundled in /public/assets/sources/.
+// Platforms shown in the "intelligent match" row — real logos bundled in /public/assets/sources/.
 const PLATFORMS = [
   'youtube', 'tiktok', 'instagram', 'x', 'facebook',
   'xiaohongshu', 'lemon8', 'douyin', 'kuaishou', 'roposo', 'moj',
 ].map((k) => ({ k, img: `/assets/sources/${k}.png` }))
 
-// 👉 EDIT THIS: your deploy records. `status` is one of delivering | ended | rejected.
-const RECORDS = [
-  {
-    id: '2050490262520713216',
-    status: 'ended',
-    title: '去了日本才知道🇯🇵動漫不是假的😲',
-    thumb: 'linear-gradient(135deg, #c3d3e2 0%, #7e96ad 55%, #d9534f 130%)',
-    views: '2,105,912',
-    amount: '$4,211.68',
-    language: 'Traditional Chinese',
-    pkg: 'Professional Business (Exclusive Edition) China',
-    remaining: 0,
-  },
-  {
-    id: '2050490262520778765',
-    status: 'delivering',
-    title: '一個人去韓國旅行 vlog 🇰🇷 必去清單',
-    thumb: 'linear-gradient(135deg, #ffd1dc 0%, #ff7eb3 60%, #845ec2 130%)',
-    views: '843,221',
-    amount: '$1,299.00',
-    language: 'Korean',
-    pkg: 'Intermediate Bundle (China) 2026',
-    remaining: 2,
-  },
-  {
-    id: '2050490262520790012',
-    status: 'delivering',
-    title: 'How I edit my travel clips in 5 minutes ✈️',
-    thumb: 'linear-gradient(135deg, #a1c4fd 0%, #45aaf2 60%, #2d3436 130%)',
-    views: '512,908',
-    amount: '$499.00',
-    language: 'English',
-    pkg: 'Starter Pack V2 (India) 2026',
-    remaining: 1,
-  },
-  {
-    id: '2050490262520701338',
-    status: 'rejected',
-    title: '街頭美食大挑戰 🍜 一天吃十家',
-    thumb: 'linear-gradient(135deg, #f6d365 0%, #fda085 60%, #b91c1c 130%)',
-    views: '12,440',
-    amount: '$299.00',
-    language: 'Simplified Chinese',
-    pkg: 'Starter Pack (China) 2026',
-    remaining: 0,
-  },
-]
+// Map backend status (UPPER) to display key (lower).
+const STATUS_MAP = { DELIVERING: 'delivering', ENDED: 'ended', REJECTED: 'rejected' }
 
 const TABS = ['all', 'delivering', 'ended', 'rejected']
+
+// Format a raw integer view count with thousands separators.
+function fmtViews(n) {
+  if (n == null) return '0'
+  return Number(n).toLocaleString('en-US')
+}
+
+// Format earning amount as $#,###.##
+function fmtAmount(n) {
+  if (n == null) return '$0.00'
+  return '$' + Number(n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+}
 
 export default function DeployHistory() {
   const { t } = useTranslation()
   const navigate = useNavigate()
   const { message } = App.useApp()
   const [tab, setTab] = useState('all')
+  const { deploys } = useDeploys()
 
-  const records = tab === 'all' ? RECORDS : RECORDS.filter((r) => r.status === tab)
+  // Derive display rows from the cached raw DeployRespVO[].
+  const rows = deploys.map((d) => ({
+    id: String(d.id),
+    status: STATUS_MAP[d.status] || 'delivering',
+    title: d.title,
+    coverUrl: d.coverUrl || null,
+    views: fmtViews(d.viewCount),
+    amount: fmtAmount(d.earningAmount),
+    language: d.language || '',
+    pkg: d.packageName || '',
+    remaining: d.remainingDays != null ? d.remainingDays : 0,
+  }))
+
+  const records = tab === 'all' ? rows : rows.filter((r) => r.status === tab)
 
   const copyId = async (id) => {
     try { await navigator.clipboard.writeText(id); message.success(t('deploy.copied')) } catch { /* noop */ }
@@ -96,6 +78,12 @@ export default function DeployHistory() {
         </div>
       </section>
 
+      {records.length === 0 && (
+        <div className="dh-empty">
+          <span className="dh-empty-text">{t('deploy.noDeploys')}</span>
+        </div>
+      )}
+
       <div className="dh-list">
         {records.map((r) => (
           <article className="dh-card" key={r.id}>
@@ -105,13 +93,15 @@ export default function DeployHistory() {
             </div>
 
             <div className="dh-card-body">
-              <div className="dh-thumb" style={{ background: r.thumb }} />
+              {r.coverUrl
+                ? <img className="dh-thumb" src={r.coverUrl} alt={r.title} />
+                : <div className="dh-thumb dh-thumb-placeholder" />}
               <div className="dh-info">
                 <div className="dh-title">{r.title}</div>
                 <div className="dh-stats">
                   <span className="dh-stat"><PlayCircleFilled className="dh-ic-play" /> {r.views}</span>
                   <span className="dh-stat"><DollarCircleFilled className="dh-ic-coin" /> {r.amount}</span>
-                  <span className="dh-stat"><GlobalOutlined className="dh-ic-globe" /> {r.language}</span>
+                  <span className="dh-stat dh-stat-lang"><GlobalOutlined className="dh-ic-globe" /> {r.language}</span>
                 </div>
               </div>
             </div>

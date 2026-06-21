@@ -343,7 +343,8 @@
     "matchHint": "Intelligently match mainstream platforms for ad delivery based on region:",
     "accountPackage": "Account Package",
     "remainingDays": "Remaining Rental Days",
-    "copied": "Copied"
+    "copied": "Copied",
+    "noDeploys": "No deploy history yet."
   },
   "menu": {
     "menu": "Menu",

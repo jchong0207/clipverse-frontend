@@ -98,6 +98,13 @@ const realApi = {
   async createVideo(body) {
     return http('/app-api/member/video/create', { method: 'POST', body })
   },
+  async listDeploys(status) {
+    const q = status ? `?status=${encodeURIComponent(status)}&pageSize=100` : '?pageSize=100'
+    return http(`/app-api/member/deploy/page${q}`)
+  },
+  async createDeploy(body) {
+    return http('/app-api/member/deploy/create', { method: 'POST', body })
+  },
 }
 
 const impl = USE_REAL ? realApi : mockApi

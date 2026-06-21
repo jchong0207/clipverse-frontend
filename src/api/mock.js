@@ -326,4 +326,17 @@ export const mockApi = {
       sourcePlatform: b.sourcePlatform, auditStatus: 'PENDING', createTime: new Date().toISOString() }
     videos.unshift(v); write('ct_videos', videos); return v
   },
+  async listDeploys() {
+    await delay(120)
+    return { items: read('ct_deploys', []), total: read('ct_deploys', []).length, pageNo: 1, pageSize: 100 }
+  },
+  async createDeploy(b) {
+    await delay()
+    const deploys = read('ct_deploys', [])
+    const d = { id: uid(), videoId: b.videoId || null, title: b.title, coverUrl: b.coverUrl || null,
+      status: b.status || 'DELIVERING', viewCount: b.viewCount || 0, earningAmount: b.earningAmount || 0,
+      language: b.language || null, packageName: b.packageName || null, remainingDays: b.remainingDays || null,
+      createTime: new Date().toISOString() }
+    deploys.unshift(d); write('ct_deploys', deploys); return d
+  },
 }
