@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Drawer } from 'antd'
 import SubPageHeader from '../components/SubPageHeader.jsx'
 import { useTranslation } from 'react-i18next'
 import { RightOutlined } from '@ant-design/icons'
@@ -7,15 +8,24 @@ import { useNotifications } from '../store/notifications.jsx'
 const TABS = ['all', 'system', 'task', 'transaction']
 const CAT = { SYSTEM: 'system', TASK: 'task', TRANSACTION: 'transaction' }
 
+// Format an ISO/LocalDateTime string as 'YYYY-MM-DD HH:mm' for the detail view.
+const fmtTime = (s) => (s ? String(s).replace('T', ' ').slice(0, 16) : '')
+
 export default function Notifications() {
   const { t } = useTranslation()
   const [tab, setTab] = useState('all')
+  const [selected, setSelected] = useState(null)
   const { notifications, markRead } = useNotifications()
 
-  const rows = notifications.map((n) => ({
-    id: n.id, title: n.title, category: CAT[n.type] || 'system', isRead: n.isRead,
-  }))
+  // Keep the full notification objects (so the detail drawer has content/createTime), plus a display category.
+  const rows = notifications.map((n) => ({ ...n, category: CAT[n.type] || 'system' }))
   const items = tab === 'all' ? rows : rows.filter((n) => n.category === tab)
+
+  // Open the detail drawer and mark the notification read (server + cache).
+  const openDetail = (n) => {
+    setSelected(n)
+    if (!n.isRead) markRead(n.id)
+  }
 
   return (
     <div className="nt">
@@ -48,7 +58,7 @@ export default function Notifications() {
       ) : (
         <ul className="nt-list">
           {items.map((n) => (
-            <li className={`nt-item ${n.isRead ? '' : 'nt-unread'}`} key={n.id} onClick={() => markRead(n.id)}>
+            <li className={`nt-item ${n.isRead ? '' : 'nt-unread'}`} key={n.id} onClick={() => openDetail(n)}>
               <div className="nt-main">
                 <div className="nt-title">{n.title}</div>
                 <span className={`nt-tag nt-tag-${n.category}`}>{t(`notify.${n.category}`)}</span>
@@ -58,6 +68,24 @@ export default function Notifications() {
           ))}
         </ul>
       )}
+
+      <Drawer
+        placement="bottom"
+        height="auto"
+        open={!!selected}
+        onClose={() => setSelected(null)}
+        title={null}
+        className="nt-drawer"
+      >
+        {selected && (
+          <div className="nt-detail">
+            <span className={`nt-tag nt-tag-${selected.category}`}>{t(`notify.${selected.category}`)}</span>
+            <h2 className="nt-detail-title">{selected.title}</h2>
+            <div className="nt-detail-time">{fmtTime(selected.createTime)}</div>
+            <p className="nt-detail-body">{selected.content || ''}</p>
+          </div>
+        )}
+      </Drawer>
     </div>
   )
 }

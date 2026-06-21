@@ -553,6 +553,12 @@ a { color: var(--accent-dark); text-decoration: none; }
 .nt-tag-task { background: #e6f4ff; color: #1d4ed8; }
 .nt-tag-transaction { background: #eaf7ee; color: #15803d; }
 .nt-chev { color: #9aa3af; font-size: 0.9rem; flex: none; }
+/* Notification detail (bottom-sheet drawer): type badge, title, created time, message body. */
+.nt-drawer .ant-drawer-body { padding: 1.25rem 1.4rem 2rem; }
+.nt-detail { display: flex; flex-direction: column; gap: 0.6rem; }
+.nt-detail-title { margin: 0.2rem 0 0; font-size: 1.25rem; font-weight: 700; line-height: 1.4; color: var(--text); }
+.nt-detail-time { color: var(--muted); font-size: 0.9rem; }
+.nt-detail-body { margin: 0.5rem 0 0; color: var(--text); font-size: 1rem; line-height: 1.7; white-space: pre-wrap; word-break: break-word; }
 .nt-empty { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 4.5rem 1rem 3rem; }
 .nt-empty-img { width: 160px; height: auto; }
 .nt-empty-text { margin: 1.3rem 0 0; color: #b9bec7; font-size: 1.1rem; }
