@@ -1,25 +1,21 @@
 import { useState } from 'react'
 import SubPageHeader from '../components/SubPageHeader.jsx'
-import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { RightOutlined } from '@ant-design/icons'
-
-// 👉 EDIT THIS: notifications. `category` is one of system | task | transaction.
-const ITEMS = [
-  { id: 'n1', title: '内部转账申请成功', category: 'system' },
-  { id: 'n2', title: 'hello', category: 'system' },
-  { id: 'n3', title: 'Your promotion task has started', category: 'task' },
-  // No 'transaction' notifications — the Transaction tab showcases the empty state.
-]
+import { useNotifications } from '../store/notifications.jsx'
 
 const TABS = ['all', 'system', 'task', 'transaction']
+const CAT = { SYSTEM: 'system', TASK: 'task', TRANSACTION: 'transaction' }
 
 export default function Notifications() {
   const { t } = useTranslation()
-  const navigate = useNavigate()
   const [tab, setTab] = useState('all')
+  const { notifications, markRead } = useNotifications()
 
-  const items = tab === 'all' ? ITEMS : ITEMS.filter((n) => n.category === tab)
+  const rows = notifications.map((n) => ({
+    id: n.id, title: n.title, category: CAT[n.type] || 'system', isRead: n.isRead,
+  }))
+  const items = tab === 'all' ? rows : rows.filter((n) => n.category === tab)
 
   return (
     <div className="nt">
@@ -52,7 +48,7 @@ export default function Notifications() {
       ) : (
         <ul className="nt-list">
           {items.map((n) => (
-            <li className="nt-item" key={n.id}>
+            <li className={`nt-item ${n.isRead ? '' : 'nt-unread'}`} key={n.id} onClick={() => markRead(n.id)}>
               <div className="nt-main">
                 <div className="nt-title">{n.title}</div>
                 <span className={`nt-tag nt-tag-${n.category}`}>{t(`notify.${n.category}`)}</span>

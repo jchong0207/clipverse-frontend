@@ -105,6 +105,16 @@ const realApi = {
   async createDeploy(body) {
     return http('/app-api/member/deploy/create', { method: 'POST', body })
   },
+  async listNotifications(type) {
+    const q = type ? `?type=${encodeURIComponent(type)}&pageSize=100` : '?pageSize=100'
+    return http(`/app-api/member/notification/page${q}`)
+  },
+  async notificationUnread() {
+    return http('/app-api/member/notification/unread-count')
+  },
+  async markNotificationRead(id) {
+    return http('/app-api/member/notification/read', { method: 'PATCH', body: { id } })
+  },
 }
 
 const impl = USE_REAL ? realApi : mockApi

@@ -6,6 +6,7 @@ import App from './App.jsx'
 import { AuthProvider } from './store/auth.jsx'
 import { VideosProvider } from './store/videos.jsx'
 import { DeployHistoryProvider } from './store/deploys.jsx'
+import { NotificationProvider } from './store/notifications.jsx'
 import './i18n/index.js'
 import './index.css'
 
@@ -28,7 +29,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
           <AuthProvider>
             <VideosProvider>
               <DeployHistoryProvider>
-                <App />
+                <NotificationProvider>
+                  <App />
+                </NotificationProvider>
               </DeployHistoryProvider>
             </VideosProvider>
           </AuthProvider>

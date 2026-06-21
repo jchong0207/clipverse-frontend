@@ -339,4 +339,19 @@ export const mockApi = {
       createTime: new Date().toISOString() }
     deploys.unshift(d); write('ct_deploys', deploys); return d
   },
+  async listNotifications() {
+    await delay(120)
+    const items = read('ct_notifications', [])
+    return { items, total: items.length, pageNo: 1, pageSize: 100 }
+  },
+  async notificationUnread() {
+    await delay(60)
+    return { count: read('ct_notifications', []).filter((n) => !n.isRead).length }
+  },
+  async markNotificationRead(id) {
+    const items = read('ct_notifications', [])
+    const n = items.find((x) => x.id === id)
+    if (n) { n.isRead = true; n.readTime = new Date().toISOString(); write('ct_notifications', items) }
+    return n || null
+  },
 }
