@@ -19,16 +19,20 @@ npm run build      # production build → dist/
 npm run preview    # serve the production build locally
 ```
 
-## Demo account
+## Demo accounts
 
-Login is enabled and a demo account is seeded automatically, so you can sign in out of the box:
+Login is enabled and several demo accounts are seeded automatically, so you can sign in out of the box. Each one covers a different **KYC (identity verification) state**, so you can demo the whole verification flow without editing any data. **The password for every account is `Demo1234`.**
 
-| Field | Value |
-|-------|-------|
-| **Email** | `demo@clipverse.com` |
-| **Password** | `Demo1234` |
+| Email | Credits | KYC state | Use it to see… |
+|-------|---------|-----------|----------------|
+| `demo@clipverse.com` | 1,000 | Unverified | The KYC submission **form** (`/kyc`) — fill it in and submit to move the account to "Under review" |
+| `pending@clipverse.com` | 1,000 | Under review | The **pending** notice shown after a submission while it's being reviewed |
+| `verified@clipverse.com` | 1,000 | Verified | The **verified** success card and the green badge on the Account page |
+| `zero@clipverse.com` | 0 | Unverified | An empty-wallet account — **zero credits / balance** for testing low/empty states |
 
-You can also create a new account via the Register page. (Accounts live in the browser's `localStorage` while running on the mock API.)
+> Submitting the KYC form (or running the reset snippet) only changes the account stored in **your browser's `localStorage`**, so each tester gets their own independent state.
+
+You can also create a new account via the Register page; new accounts start **Unverified**. (Accounts live in the browser's `localStorage` while running on the mock API.)
 
 ## Backend — when it's ready
 

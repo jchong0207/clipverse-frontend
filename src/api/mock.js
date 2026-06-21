@@ -100,17 +100,27 @@ function addTxn(userId, txn) {
 
 const publicUser = (u) => ({ id: u.id, name: u.name, email: u.email, creditBalance: round2(u.creditBalance || 0), kycStatus: u.kycStatus || 'unverified' })
 
-// Always-available demo account so login works out of the box.
-// Credentials: demo@clipverse.com / Demo1234
-const DEMO_USER = { id: 'demo-user', name: 'Demo User', email: 'demo@clipverse.com', password: 'Demo1234', creditBalance: 1000 }
-function seedDemoUser() {
+// Always-available demo accounts so login works out of the box. Each one covers a
+// different KYC state so the verification flow can be demoed without editing data.
+// Password for every demo account: Demo1234  (emails below are already lowercase)
+const DEMO_USERS = [
+  { id: 'demo-user', name: 'Demo User', email: 'demo@clipverse.com', password: 'Demo1234', creditBalance: 1000, kycStatus: 'unverified' },
+  { id: 'demo-pending', name: 'Pending Demo', email: 'pending@clipverse.com', password: 'Demo1234', creditBalance: 1000, kycStatus: 'pending' },
+  { id: 'demo-verified', name: 'Verified Demo', email: 'verified@clipverse.com', password: 'Demo1234', creditBalance: 1000, kycStatus: 'verified' },
+  { id: 'demo-zero', name: 'Zero Balance Demo', email: 'zero@clipverse.com', password: 'Demo1234', creditBalance: 0, kycStatus: 'unverified' },
+]
+function seedDemoUsers() {
   const users = read(LS.users, [])
-  if (!users.some((u) => u.email.toLowerCase() === DEMO_USER.email)) {
-    users.push({ ...DEMO_USER })
-    write(LS.users, users)
+  let changed = false
+  for (const d of DEMO_USERS) {
+    if (!users.some((u) => u.email.toLowerCase() === d.email)) {
+      users.push({ ...d })
+      changed = true
+    }
   }
+  if (changed) write(LS.users, users)
 }
-seedDemoUser()
+seedDemoUsers()
 
 export const mockApi = {
   async register({ name, email, password }) {
