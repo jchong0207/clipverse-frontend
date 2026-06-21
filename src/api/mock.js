@@ -98,7 +98,7 @@ function addTxn(userId, txn) {
   write(LS.txns, txns)
 }
 
-const publicUser = (u) => ({ id: u.id, name: u.name, email: u.email, creditBalance: round2(u.creditBalance || 0) })
+const publicUser = (u) => ({ id: u.id, name: u.name, email: u.email, creditBalance: round2(u.creditBalance || 0), kycStatus: u.kycStatus || 'unverified' })
 
 // Always-available demo account so login works out of the box.
 // Credentials: demo@clipverse.com / Demo1234
@@ -147,6 +147,18 @@ export const mockApi = {
   async logout() {
     localStorage.removeItem(LS.session)
     return {}
+  },
+
+  // ---- KYC / real-name verification ----
+  // Submits identity info for review. We don't persist the uploaded images in the
+  // mock — just flip the user's status to 'pending' so the review flow is visible.
+  async submitKyc(payload = {}) {
+    await delay()
+    const user = requireUser()
+    user.kycStatus = 'pending'
+    user.kyc = { country: payload.country, docType: payload.docType, submittedAt: new Date().toISOString() }
+    saveUser(user)
+    return publicUser(user)
   },
 
   async listPackages() {

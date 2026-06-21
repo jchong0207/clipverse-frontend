@@ -110,6 +110,11 @@
     "settings": "Settings",
     "kyc": "KYC",
     "verified": "Verified",
+    "kycStatus": {
+      "unverified": "Not verified",
+      "pending": "Under review",
+      "verified": "Verified"
+    },
     "revenueHistory": "Revenue History",
     "transactionHistory": "Transaction History"
   },
@@ -179,7 +184,36 @@
   "kyc": {
     "title": "Authorized",
     "desc": "Your identity has been successfully verified",
-    "return": "Return"
+    "return": "Return",
+    "pending": {
+      "title": "Under Review",
+      "desc": "Your identity information has been submitted and is being reviewed. This usually takes 1–3 business days."
+    },
+    "form": {
+      "title": "Identity Verification",
+      "heading": "Real-name Verification",
+      "country": "Country",
+      "docType": "Document Type",
+      "docTypes": {
+        "idCard": "ID Card",
+        "passport": "Passport",
+        "driverLicense": "Driver's License"
+      },
+      "photos": "Document Photos",
+      "photosHint": "Please upload photos of your document",
+      "slots": {
+        "front": "Front",
+        "back": "Back",
+        "handheld": "Handheld"
+      },
+      "requirements": "Review Requirements",
+      "requirementsHint": "Complete borders; even brightness; sharp focus",
+      "submit": "Submit",
+      "submitting": "Submitting…",
+      "submitted": "Submitted for review",
+      "failed": "Submission failed, please try again",
+      "uploadAll": "Please upload all three document photos"
+    }
   },
   "about": {
     "profileTitle": "Company Profile",

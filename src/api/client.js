@@ -54,9 +54,10 @@ const realApi = {
   },
   async me() {
     const u = await http('/app-api/member/user/get')
-    return { id: u.id, name: u.nickname, email: u.email, creditBalance: u.creditBalance }
+    return { id: u.id, name: u.nickname, email: u.email, creditBalance: u.creditBalance, kycStatus: u.kycStatus || 'unverified' }
   },
   logout: async () => ({}),
+  submitKyc: (b) => http('/app-api/member/user/kyc', { method: 'POST', body: b }),
   listPackages: () => http('/api/packages'),
   getWallet: () => http('/api/wallet'),
   buyCredits: (b) => http('/api/wallet/buy', { method: 'POST', body: b }),

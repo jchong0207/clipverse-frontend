@@ -110,6 +110,11 @@
     "settings": "設定",
     "kyc": "KYC",
     "verified": "已驗證",
+    "kycStatus": {
+      "unverified": "未驗證",
+      "pending": "審核中",
+      "verified": "已驗證"
+    },
     "revenueHistory": "收益紀錄",
     "transactionHistory": "交易紀錄"
   },
@@ -179,7 +184,36 @@
   "kyc": {
     "title": "已授權",
     "desc": "您的身分已成功驗證",
-    "return": "返回"
+    "return": "返回",
+    "pending": {
+      "title": "審核中",
+      "desc": "您的身分資訊已提交，正在審核中。通常需要 1–3 個工作天。"
+    },
+    "form": {
+      "title": "實名認證",
+      "heading": "實名認證",
+      "country": "國家",
+      "docType": "證件類型",
+      "docTypes": {
+        "idCard": "身分證",
+        "passport": "護照",
+        "driverLicense": "駕照"
+      },
+      "photos": "證件照片",
+      "photosHint": "請上傳證件照片",
+      "slots": {
+        "front": "證件正面",
+        "back": "證件背面",
+        "handheld": "手持證件"
+      },
+      "requirements": "審核要求",
+      "requirementsHint": "邊框完整；亮度均勻；對焦清晰",
+      "submit": "提交",
+      "submitting": "提交中…",
+      "submitted": "已提交審核",
+      "failed": "提交失敗，請再試一次",
+      "uploadAll": "請上傳全部三張證件照片"
+    }
   },
   "change": {
     "title": "變動紀錄",

@@ -31,6 +31,7 @@ export default function Account() {
   const idText = maskId(user)
   const credit = user?.creditBalance ?? 51
   const uid = user?.id ?? '0470508'
+  const kycStatus = user?.kycStatus || 'unverified'
 
   const copyUid = async () => {
     try { await navigator.clipboard.writeText(String(uid)); message.success(t('account.copied')) } catch { /* noop */ }
@@ -87,7 +88,7 @@ export default function Account() {
           <button type="button" className="mp-list-item" onClick={() => navigate('/kyc')}>
             <span className="mp-list-icon"><SafetyCertificateOutlined /></span>
             <span className="mp-list-label">{t('account.kyc')}</span>
-            <span className="mp-list-val verified">{t('account.verified')}</span>
+            <span className={`mp-list-val kyc-${kycStatus}`}>{t(`account.kycStatus.${kycStatus}`)}</span>
             <RightOutlined className="mp-list-chev" />
           </button>
           <button type="button" className="mp-list-item" onClick={() => navigate('/revenue-history')}>
