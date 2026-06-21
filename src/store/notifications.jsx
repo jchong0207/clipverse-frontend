@@ -49,13 +49,17 @@ export function NotificationProvider({ children }) {
   }, [user, load])
 
   const markRead = useCallback(async (id) => {
+    // Skip if already read locally (avoids decrementing the unread count twice).
+    let wasUnread = false
+    setNotifications((prev) => prev.map((n) => {
+      if (n.id === id && !n.isRead) { wasUnread = true; return { ...n, isRead: true } }
+      return n
+    }))
+    if (wasUnread) setUnreadCount((c) => Math.max(0, c - 1))
     try {
-      const updated = await api.markNotificationRead(id)
-      if (updated) {
-        setNotifications((prev) => prev.map((n) => (n.id === id ? { ...n, isRead: true } : n)))
-        setUnreadCount((c) => Math.max(0, c - 1))
-      }
-    } catch { /* noop */ }
+      // Treat HTTP success as success — the backend PATCH may return the row, true, or null.
+      await api.markNotificationRead(id)
+    } catch { /* server failed; the optimistic local read stays — a refresh would reconcile */ }
   }, [])
 
   const refresh = useCallback(() => load(true), [load])
