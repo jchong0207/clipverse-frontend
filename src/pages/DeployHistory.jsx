@@ -2,7 +2,7 @@ import { useState } from 'react'
 import SubPageHeader from '../components/SubPageHeader.jsx'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { App } from 'antd'
+import { App, Empty } from 'antd'
 import {
   CopyOutlined, PlayCircleFilled, DollarCircleFilled, GlobalOutlined,
 } from '@ant-design/icons'
@@ -79,9 +79,10 @@ export default function DeployHistory() {
       </section>
 
       {records.length === 0 && (
-        <div className="dh-empty">
-          <span className="dh-empty-text">{t('deploy.noDeploys')}</span>
-        </div>
+        <Empty
+          description={<span className="muted">{t('deploy.noDeploys')}</span>}
+          style={{ padding: '3rem 0' }}
+        />
       )}
 
       <div className="dh-list">

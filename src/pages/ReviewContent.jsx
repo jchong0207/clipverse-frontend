@@ -41,9 +41,10 @@ export default function ReviewContent() {
       </nav>
 
       {shown.length === 0 && (
-        <div className="rc-empty">
-          <Empty description={<span className="muted">{t('video.noVideos')}</span>} />
-        </div>
+        <Empty
+          description={<span className="muted">{t('video.noVideos')}</span>}
+          style={{ padding: '3rem 0' }}
+        />
       )}
 
       <div className="rc-list">
