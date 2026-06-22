@@ -3,7 +3,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { Form, Input, Button, Alert, Card } from 'antd'
 import { useAuth } from '../store/auth.jsx'
-import { LINE_URL } from '../constants.js'
+import { LINE_URL, openExternal } from '../constants.js'
 
 export default function Login() {
   const { t } = useTranslation()
@@ -47,7 +47,7 @@ export default function Login() {
         </Form>
         <div className="login-bottom">
           <span className="muted">{t('login.noAccount')} <Link to="/register">{t('login.create')}</Link></span>
-          <button type="button" className="link-btn" onClick={() => window.open(LINE_URL, '_blank', 'noopener,noreferrer')}>
+          <button type="button" className="link-btn" onClick={() => openExternal(LINE_URL)}>
             {t('login.forgot')}
           </button>
         </div>

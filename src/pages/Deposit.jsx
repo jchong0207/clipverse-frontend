@@ -4,7 +4,7 @@ import { BtcIcon } from '../components/cryptoIcons.jsx'
 import { useTranslation } from 'react-i18next'
 import { App } from 'antd'
 import { RightOutlined, GlobalOutlined, BankOutlined } from '@ant-design/icons'
-import { LINE_URL } from '../constants.js'
+import { LINE_URL, openExternal } from '../constants.js'
 
 const METHODS = [
   { key: 'online', icon: <GlobalOutlined style={{ color: '#2f6bf0' }} /> },
@@ -19,7 +19,7 @@ export default function Deposit() {
 
   const onMethod = (key) => {
     if (key === 'online') navigate('/online-payment')
-    else if (key === 'bank') window.open(LINE_URL, '_blank', 'noopener,noreferrer')
+    else if (key === 'bank') openExternal(LINE_URL)
     else if (key === 'crypto') navigate('/crypto-deposit')
     else message.info(t('deposit.soon'))
   }
