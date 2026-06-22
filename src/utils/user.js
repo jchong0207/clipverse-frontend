@@ -10,10 +10,10 @@ export function maskId(user) {
 }
 
 // Format a wallet balance (number or numeric string) with thousands separators and 2 decimals.
-// Falls back to the demo placeholder when no balance is available (standalone mock mode).
+// Falls back to 0.00 until the real balance is fetched from the DB after login.
 export function formatBalance(value) {
-  if (value === null || value === undefined || value === '') return '115,486.71'
+  if (value === null || value === undefined || value === '') return '0.00'
   const n = Number(value)
-  if (Number.isNaN(n)) return '115,486.71'
+  if (Number.isNaN(n)) return '0.00'
   return n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
 }
