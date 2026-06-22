@@ -406,6 +406,13 @@ a { color: var(--accent-dark); text-decoration: none; }
 .th-amount { font-size: 1.95rem; font-weight: 500; color: #1f2430; line-height: 1.1; }
 .th-date { color: #9aa3b2; font-size: 1rem; }
 
+/* ===== Dropdown menus (shared) ===== */
+/* Cap every dropdown to ~5 rows, then scroll (menus were previously unbounded). */
+.ant-dropdown-menu { max-height: 168px; overflow-y: auto; }
+/* Icon/flag rows are taller (~42px); size their cap for 5 of those rows. */
+.wd-method-menu.ant-dropdown-menu,
+.op-menu.ant-dropdown-menu { max-height: 220px; }
+
 /* ===== Crypto Deposit page ===== */
 .wd-head2 { margin-top: 1.5rem; }
 /* Uniform icon box so every dropdown row (coins + fiat) aligns identically */
@@ -666,7 +673,7 @@ a { color: var(--accent-dark); text-decoration: none; }
 .iv-caret-open { transform: rotate(180deg); }
 .iv-dd-menu { position: absolute; top: calc(100% + 6px); left: 0; right: 0; z-index: 20; list-style: none; margin: 0;
   padding: 0.35rem; background: #fff; border: 1px solid #d4ddec; border-radius: 12px;
-  box-shadow: 0 14px 34px rgba(15, 23, 42, 0.16); max-height: 264px; overflow-y: auto; }
+  box-shadow: 0 14px 34px rgba(15, 23, 42, 0.16); max-height: 236px; overflow-y: auto; }
 .iv-dd-item { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; width: 100%;
   background: transparent; border: none; border-radius: 8px; padding: 0.7rem 0.85rem; font: inherit; font-size: 1rem;
   font-weight: 500; color: var(--text); cursor: pointer; text-align: left; }
