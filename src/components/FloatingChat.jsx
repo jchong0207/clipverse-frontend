@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { MessageFilled } from '@ant-design/icons'
-import { LINE_URL } from '../constants.js'
+import { LINE_URL, openExternal } from '../constants.js'
 
 const SIZE = 54
 const MARGIN = 14
@@ -40,7 +40,7 @@ export default function FloatingChat() {
       // snap to nearest left / right edge, keep vertical position
       setPos((p) => clamp({ x: (p.x + SIZE / 2 < window.innerWidth / 2) ? MARGIN : window.innerWidth - SIZE - MARGIN, y: p.y }))
     } else {
-      window.open(LINE_URL, '_blank', 'noopener,noreferrer')
+      openExternal(LINE_URL)
     }
   }
 
