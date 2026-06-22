@@ -2,20 +2,11 @@ import { App } from 'antd'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useAuth } from '../store/auth.jsx'
-import { maskId } from '../utils/user.js'
+import { maskId, formatBalance } from '../utils/user.js'
 import {
   CopyOutlined, SendOutlined, ForwardOutlined, BarChartOutlined, CodeSandboxOutlined, IdcardOutlined,
   SafetyCertificateOutlined, SwapOutlined, FileTextOutlined, RightOutlined,
 } from '@ant-design/icons'
-
-// Format a wallet balance (number or numeric string) with thousands separators and 2 decimals.
-// Falls back to the demo placeholder when no balance is available (standalone mock mode).
-function formatBalance(value) {
-  if (value === null || value === undefined || value === '') return '115,486.71'
-  const n = Number(value)
-  if (Number.isNaN(n)) return '115,486.71'
-  return n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
-}
 
 // 👉 Data Overview cards. (Product Orders intentionally omitted.)
 const STATS = [
@@ -31,8 +22,8 @@ export default function Account() {
   const navigate = useNavigate()
 
   const idText = maskId(user)
-  const credit = user?.creditBalance ?? 51
-  const uid = user?.uid ?? user?.id ?? '0470508'
+  const credit = user?.creditBalance ?? 0
+  const uid = user?.uid ?? user?.id ?? ''
   const balance = formatBalance(user?.walletBalance)
   const kycStatus = user?.kycStatus || 'unverified'
 

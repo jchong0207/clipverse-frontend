@@ -8,7 +8,7 @@ const KEY = 'cv_home_ann_seen'
 export default function HomeAnnouncement({ announcement = HOME_ANNOUNCEMENT }) {
   const { user } = useAuth()
   const [open, setOpen] = useState(false)
-  const uid = user?.id || user?.uid || '0108946'
+  const uid = user?.uid ?? user?.id ?? ''
   const fill = (s) => String(s).replace('{uid}', uid)
 
   useEffect(() => {

@@ -8,3 +8,12 @@ export function maskId(user) {
   const s = String(v)
   return s.length > 7 ? `${s.slice(0, 3)}****${s.slice(-4)}` : s
 }
+
+// Format a wallet balance (number or numeric string) with thousands separators and 2 decimals.
+// Falls back to 0.00 until the real balance is fetched from the DB after login.
+export function formatBalance(value) {
+  if (value === null || value === undefined || value === '') return '0.00'
+  const n = Number(value)
+  if (Number.isNaN(n)) return '0.00'
+  return n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+}
