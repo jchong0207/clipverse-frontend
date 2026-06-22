@@ -7,8 +7,8 @@ import SubPageHeader from '../components/SubPageHeader.jsx'
 import { UsdtIcon, UsdcIcon, EthIcon, BtcIcon, BankCircle } from '../components/cryptoIcons.jsx'
 import { FIAT } from '../data/fiatCurrencies.js'
 import { loadJSON } from '../utils/storage.js'
-
-const BALANCE = '115,486.71'
+import { useAuth } from '../store/auth.jsx'
+import { formatBalance } from '../utils/user.js'
 
 // rate = units of the selected currency per 1 USDT withdrawn
 const METHODS = [
@@ -24,6 +24,8 @@ export default function Withdrawal() {
   const { t } = useTranslation()
   const navigate = useNavigate()
   const { message } = App.useApp()
+  const { user } = useAuth()
+  const balance = formatBalance(user?.walletBalance)
   const [amount, setAmount] = useState('')
   const [methodKey, setMethodKey] = useState('USDT-TRC20')
   const [pwd, setPwd] = useState('')
@@ -53,7 +55,7 @@ export default function Withdrawal() {
       <div className="wd-body">
         <div className="wd-balance">
           <div className="wd-balance-label">{t('withdraw.balance')}</div>
-          <div className="wd-balance-amt">{BALANCE}</div>
+          <div className="wd-balance-amt">{balance}</div>
         </div>
 
         <div className="wd-card">
