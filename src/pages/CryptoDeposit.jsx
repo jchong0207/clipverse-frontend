@@ -4,15 +4,13 @@ import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { App, Dropdown, QRCode } from 'antd'
 import { DownOutlined, CopyOutlined, CameraOutlined } from '@ant-design/icons'
-import { UsdtIcon, UsdcIcon, EthIcon, BtcIcon } from '../components/cryptoIcons.jsx'
+import { UsdtIcon, UsdcIcon } from '../components/cryptoIcons.jsx'
 import { FIAT, flagSrc } from '../data/fiatCurrencies.js'
 
 // On-chain networks: value in USDT + a mock receive address per network
 const COINS = [
   { key: 'USDT-TRC20', rate: 1, icon: <UsdtIcon />, address: 'THh8AwmUJY6N2RHL672yJy7aAK6nzi9rPR', qr: '/assets/img/deposit-trc20-qr.png' },
   { key: 'USDC-ERC20', rate: 1, icon: <UsdcIcon />, address: '0x8B2c2d4F1bC0a3E7d5A6c9B1234567890aBcDeF0' },
-  { key: 'ETH', rate: 3500, icon: <EthIcon />, address: '0xAb5801a7D398351b8bE11C439e05C5B3259aeC9B' },
-  { key: 'BTC', rate: 65000, icon: <BtcIcon />, address: 'bc1qar0srrr7xfkvy5l643lydnw9re59gtzzwf5mdq' },
 ]
 // Combined selector: on-chain coins + supported fiat currencies (fiat has no on-chain address)
 const OPTIONS = [...COINS, ...FIAT.map((f) => ({ key: f.code, rate: f.rate, cc: f.cc }))]
