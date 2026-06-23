@@ -5,15 +5,12 @@ import { useTranslation } from 'react-i18next'
 import { App, Dropdown, QRCode } from 'antd'
 import { DownOutlined, CopyOutlined, CameraOutlined } from '@ant-design/icons'
 import { UsdtIcon, UsdcIcon } from '../components/cryptoIcons.jsx'
-import { FIAT, flagSrc } from '../data/fiatCurrencies.js'
 
 // On-chain networks: value in USDT + a mock receive address per network
 const COINS = [
   { key: 'USDT-TRC20', rate: 1, icon: <UsdtIcon />, address: 'THh8AwmUJY6N2RHL672yJy7aAK6nzi9rPR', qr: '/assets/img/deposit-trc20-qr.png' },
   { key: 'USDC-ERC20', rate: 1, icon: <UsdcIcon />, address: '0x8B2c2d4F1bC0a3E7d5A6c9B1234567890aBcDeF0' },
 ]
-// Combined selector: on-chain coins + supported fiat currencies (fiat has no on-chain address)
-const OPTIONS = [...COINS, ...FIAT.map((f) => ({ key: f.code, rate: f.rate, cc: f.cc }))]
 
 export default function CryptoDeposit() {
   const { t } = useTranslation()
@@ -24,8 +21,7 @@ export default function CryptoDeposit() {
   const [selKey, setSelKey] = useState('USDT-TRC20')
   const [receipt, setReceipt] = useState(null)
 
-  const sel = OPTIONS.find((o) => o.key === selKey) || OPTIONS[0]
-  const isCrypto = !!sel.address
+  const sel = COINS.find((o) => o.key === selKey) || COINS[0]
   const onAmount = (e) => setAmount(e.target.value.replace(/\D/g, ''))
   const credited = amount ? (Number(amount) * sel.rate).toLocaleString(undefined, { maximumFractionDigits: 2 }) : '0'
 
@@ -37,10 +33,10 @@ export default function CryptoDeposit() {
     if (f) setReceipt(URL.createObjectURL(f))
   }
 
-  const menuItems = OPTIONS.map((o) => ({
+  const menuItems = COINS.map((o) => ({
     key: o.key,
     label: o.key,
-    icon: <span className="cd-ico">{o.address ? o.icon : <img className="cd-flag" src={flagSrc(o.cc)} alt="" />}</span>,
+    icon: <span className="cd-ico">{o.icon}</span>,
   }))
 
   return (
@@ -57,7 +53,7 @@ export default function CryptoDeposit() {
             <input className="wd-input" inputMode="numeric" placeholder="0.00" value={amount} onChange={onAmount} />
             <Dropdown trigger={['click']} menu={{ className: 'wd-method-menu', items: menuItems, selectable: true, selectedKeys: [selKey], onClick: ({ key }) => setSelKey(key) }}>
               <button type="button" className="wd-coin op-curbtn">
-                {isCrypto ? <>{sel.key} {sel.icon}</> : <><img className="cd-flag-btn" src={flagSrc(sel.cc)} alt="" />{sel.key}</>}
+                {sel.key} {sel.icon}
                 <DownOutlined className="wd-caret" />
               </button>
             </Dropdown>
@@ -70,15 +66,13 @@ export default function CryptoDeposit() {
           </div>
         </div>
 
-        {isCrypto && (
-          <div className="wd-card cd-qr">
-            <div className="cd-qr-wrap">{sel.qr ? <img className="cd-qr-img" src={sel.qr} width={156} height={156} alt={sel.key} /> : <QRCode value={sel.address} size={156} bordered={false} />}</div>
-            <div className="cd-addr">
-              <span className="cd-addr-text">{sel.address}</span>
-              <button type="button" className="cd-copy" onClick={copyAddr}><CopyOutlined /> {t('deposit.copy')}</button>
-            </div>
+        <div className="wd-card cd-qr">
+          <div className="cd-qr-wrap">{sel.qr ? <img className="cd-qr-img" src={sel.qr} width={156} height={156} alt={sel.key} /> : <QRCode value={sel.address} size={156} bordered={false} />}</div>
+          <div className="cd-addr">
+            <span className="cd-addr-text">{sel.address}</span>
+            <button type="button" className="cd-copy" onClick={copyAddr}><CopyOutlined /> {t('deposit.copy')}</button>
           </div>
-        )}
+        </div>
 
         <div className="wd-card cd-upload">
           <div className="cd-up-label">{t('deposit.uploadReceipt')}</div>
