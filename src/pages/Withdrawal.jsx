@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { App, Dropdown } from 'antd'
 import { DownOutlined, RightOutlined } from '@ant-design/icons'
 import SubPageHeader from '../components/SubPageHeader.jsx'
-import { UsdtIcon, UsdcIcon, EthIcon, BtcIcon, BankCircle } from '../components/cryptoIcons.jsx'
+import { UsdtIcon, UsdcIcon, BankCircle } from '../components/cryptoIcons.jsx'
 import { FIAT } from '../data/fiatCurrencies.js'
 import { loadJSON } from '../utils/storage.js'
 import { useAuth } from '../store/auth.jsx'
@@ -15,8 +15,6 @@ const METHODS = [
   { key: 'bank', cur: 'USD', rate: 1, icon: <BankCircle /> },
   { key: 'USDT-TRC20', cur: 'USDT-TRC20', rate: 1, icon: <UsdtIcon /> },
   { key: 'USDC-ERC20', cur: 'USDC-ERC20', rate: 1, icon: <UsdcIcon /> },
-  { key: 'ETH', cur: 'ETH', rate: 1 / 3500, icon: <EthIcon /> },
-  { key: 'BTC', cur: 'BTC', rate: 1 / 65000, icon: <BtcIcon /> },
 ]
 
 export default function Withdrawal() {
