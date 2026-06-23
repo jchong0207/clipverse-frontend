@@ -219,7 +219,8 @@
     "title": "Catatan Perubahan",
     "recharge": "Isi Ulang",
     "playback": "Pendapatan Pemutaran",
-    "withdraw": "Tarik"
+    "withdraw": "Tarik",
+    "empty": "Belum ada catatan pendapatan."
   },
   "txhist": {
     "title": "Riwayat Transaksi",
@@ -227,7 +228,8 @@
     "withdrawal": "Pesanan penarikan",
     "delivered": "Terkirim",
     "payoutSuccess": "Pembayaran berhasil",
-    "copied": "Nomor pesanan tersalin"
+    "copied": "Nomor pesanan tersalin",
+    "empty": "Belum ada transaksi."
   },
   "deposit": {
     "title": "Setoran",

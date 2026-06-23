@@ -219,7 +219,8 @@
     "title": "Registros de cambios",
     "recharge": "Recarga",
     "playback": "Ingresos por reproducción",
-    "withdraw": "Retirar"
+    "withdraw": "Retirar",
+    "empty": "Aún no hay registros de ingresos."
   },
   "txhist": {
     "title": "Historial de transacciones",
@@ -227,7 +228,8 @@
     "withdrawal": "Orden de retiro",
     "delivered": "Entregado",
     "payoutSuccess": "Pago realizado con éxito",
-    "copied": "Número de pedido copiado"
+    "copied": "Número de pedido copiado",
+    "empty": "Aún no hay transacciones."
   },
   "deposit": {
     "title": "Depósito",

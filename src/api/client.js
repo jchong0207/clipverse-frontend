@@ -115,6 +115,13 @@ const realApi = {
   async markNotificationRead(id) {
     return http('/app-api/member/notification/read', { method: 'PATCH', body: { id } })
   },
+  async listTransactions(type) {
+    const q = type ? `?type=${encodeURIComponent(type)}&pageSize=100` : '?pageSize=100'
+    return http(`/app-api/member/transaction/page${q}`)
+  },
+  async listRevenue() {
+    return http('/app-api/member/revenue/page?pageSize=100')
+  },
 }
 
 const impl = USE_REAL ? realApi : mockApi

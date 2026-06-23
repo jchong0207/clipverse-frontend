@@ -219,7 +219,8 @@
     "title": "變動紀錄",
     "recharge": "儲值",
     "playback": "播放收益",
-    "withdraw": "提現"
+    "withdraw": "提現",
+    "empty": "尚無收益記錄。"
   },
   "txhist": {
     "title": "交易紀錄",
@@ -227,7 +228,8 @@
     "withdrawal": "提現訂單",
     "delivered": "已交付",
     "payoutSuccess": "出款成功",
-    "copied": "已複製訂單編號"
+    "copied": "已複製訂單編號",
+    "empty": "尚無交易記錄。"
   },
   "deposit": {
     "title": "儲值",

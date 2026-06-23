@@ -219,7 +219,8 @@
     "title": "변동 기록",
     "recharge": "충전",
     "playback": "재생 수익",
-    "withdraw": "출금"
+    "withdraw": "출금",
+    "empty": "아직 수익 내역이 없습니다."
   },
   "txhist": {
     "title": "거래 내역",
@@ -227,7 +228,8 @@
     "withdrawal": "출금 주문",
     "delivered": "지급 완료",
     "payoutSuccess": "지급 성공",
-    "copied": "주문 번호가 복사되었습니다"
+    "copied": "주문 번호가 복사되었습니다",
+    "empty": "아직 거래 내역이 없습니다."
   },
   "deposit": {
     "title": "입금",
