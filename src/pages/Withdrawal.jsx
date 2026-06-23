@@ -40,7 +40,11 @@ export default function Withdrawal() {
   const label = (m) => (m.key === 'bank' ? t('withdraw.bankMethod') : m.key)
 
   const onAmount = (e) => setAmount(e.target.value.replace(/[^\d.]/g, ''))
-  const credited = amount ? (Number(amount) * rate).toLocaleString(undefined, { maximumFractionDigits: isBank ? 2 : 8 }) : '0'
+  const fmtCur = (n) => n.toLocaleString(undefined, { maximumFractionDigits: isBank ? 2 : 8 })
+  const gross = amount ? Number(amount) * rate : 0
+  const credited = amount ? fmtCur(gross) : '0'
+  // Final amount the user receives, net of the flat handling fee (never below 0).
+  const creditedNet = amount ? fmtCur(Math.max(0, gross - HANDLING_FEE)) : '0'
   const onWithdraw = () => {
     if (!amount || Number(amount) < 100) { message.error(t('withdraw.minError')); return }
     if (!pwd) { message.error(t('withdraw.pwdError')); return }
@@ -110,7 +114,7 @@ export default function Withdrawal() {
           <div className="wd-divider" />
           <div className="wd-fee-row">
             <span className="wd-fee-label">{t('withdraw.creditedAmount')}</span>
-            <span className="wd-fee-val accent">{credited} {cur}</span>
+            <span className="wd-fee-val accent">{creditedNet} {cur}</span>
           </div>
         </div>
 
