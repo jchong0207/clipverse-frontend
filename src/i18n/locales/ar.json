@@ -277,7 +277,7 @@
     "withdrawCurrency": "عملة السحب",
     "fullName": "الاسم الكامل",
     "bankAccount": "رقم الحساب البنكي",
-    "bsb": "BSB",
+    "bsb": "Bank Swift Code",
     "payId": "Pay ID",
     "bankName": "اسم البنك",
     "confirmBinding": "تأكيد الربط"

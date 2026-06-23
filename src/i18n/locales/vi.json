@@ -277,7 +277,7 @@
     "withdrawCurrency": "Loại tiền rút",
     "fullName": "Họ và tên",
     "bankAccount": "Số tài khoản ngân hàng",
-    "bsb": "BSB",
+    "bsb": "Bank Swift Code",
     "payId": "Pay ID",
     "bankName": "Tên ngân hàng",
     "confirmBinding": "Xác nhận liên kết"

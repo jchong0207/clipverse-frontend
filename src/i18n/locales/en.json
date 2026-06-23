@@ -294,7 +294,7 @@
     "withdrawCurrency": "Withdrawal currency",
     "fullName": "Full Name",
     "bankAccount": "Bank Account Number",
-    "bsb": "BSB",
+    "bsb": "Bank Swift Code",
     "payId": "Pay ID",
     "bankName": "Bank Name",
     "confirmBinding": "Confirm binding"

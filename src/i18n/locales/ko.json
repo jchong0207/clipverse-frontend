@@ -277,7 +277,7 @@
     "withdrawCurrency": "출금 통화",
     "fullName": "성명",
     "bankAccount": "은행 계좌 번호",
-    "bsb": "BSB",
+    "bsb": "Bank Swift Code",
     "payId": "Pay ID",
     "bankName": "은행명",
     "confirmBinding": "연결 확인"

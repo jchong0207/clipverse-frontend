@@ -277,7 +277,7 @@
     "withdrawCurrency": "Moneda de retiro",
     "fullName": "Nombre completo",
     "bankAccount": "Número de cuenta bancaria",
-    "bsb": "BSB",
+    "bsb": "Bank Swift Code",
     "payId": "Pay ID",
     "bankName": "Nombre del banco",
     "confirmBinding": "Confirmar vinculación"

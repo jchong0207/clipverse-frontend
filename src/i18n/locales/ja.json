@@ -277,7 +277,7 @@
     "withdrawCurrency": "出金通貨",
     "fullName": "氏名",
     "bankAccount": "銀行口座番号",
-    "bsb": "BSB",
+    "bsb": "Bank Swift Code",
     "payId": "Pay ID",
     "bankName": "銀行名",
     "confirmBinding": "連携を確定"
