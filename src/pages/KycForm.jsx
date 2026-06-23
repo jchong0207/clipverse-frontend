@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { App, Dropdown } from 'antd'
 import { DownOutlined, SafetyCertificateFilled, CheckCircleFilled, CloseCircleFilled } from '@ant-design/icons'
 import { flagSrc } from '../data/fiatCurrencies.js'
-import { DOC_SAMPLES, DocFrontSample } from '../components/kycSamples.jsx'
+import { DOC_SAMPLES, DocFrontSample, DocCutoffSample, DocGlareSample } from '../components/kycSamples.jsx'
 
 // Countries selectable for verification (flag asset must exist in /public/assets/flags).
 const COUNTRIES = [
@@ -136,9 +136,13 @@ export default function KycForm({ onSubmitted }) {
           <label className="kf-label">{t('kyc.form.requirements')}</label>
           <p className="kf-hint">{t('kyc.form.requirementsHint')}</p>
           <div className="kf-examples">
-            {[true, false, false].map((ok, i) => (
+            {[
+              { ok: true, Sample: DocFrontSample },
+              { ok: false, Sample: DocCutoffSample },
+              { ok: false, Sample: DocGlareSample },
+            ].map(({ ok, Sample }, i) => (
               <div className={`kf-example ${ok ? 'ok' : 'bad'}`} key={i}>
-                <div className="kf-example-card"><DocFrontSample /></div>
+                <div className="kf-example-card"><Sample /></div>
                 <span className="kf-example-badge">
                   {ok ? <CheckCircleFilled /> : <CloseCircleFilled />}
                 </span>
