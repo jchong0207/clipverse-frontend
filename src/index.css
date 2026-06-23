@@ -412,6 +412,8 @@ a { color: var(--accent-dark); text-decoration: none; }
 /* Icon/flag rows are taller (~42px); size their cap for 5 of those rows. */
 .wd-method-menu.ant-dropdown-menu,
 .op-menu.ant-dropdown-menu { max-height: 220px; }
+/* Language menus stay full size — show every language without a scroll cap. */
+.lang-dd-menu.ant-dropdown-menu { max-height: none; }
 
 /* ===== Crypto Deposit page ===== */
 .wd-head2 { margin-top: 1.5rem; }
@@ -674,7 +676,7 @@ a { color: var(--accent-dark); text-decoration: none; }
 .iv-caret-open { transform: rotate(180deg); }
 .iv-dd-menu { position: absolute; top: calc(100% + 6px); left: 0; right: 0; z-index: 20; list-style: none; margin: 0;
   padding: 0.35rem; background: #fff; border: 1px solid #d4ddec; border-radius: 12px;
-  box-shadow: 0 14px 34px rgba(15, 23, 42, 0.16); max-height: 236px; overflow-y: auto; }
+  box-shadow: 0 14px 34px rgba(15, 23, 42, 0.16); }
 .iv-dd-item { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; width: 100%;
   background: transparent; border: none; border-radius: 8px; padding: 0.7rem 0.85rem; font: inherit; font-size: 1rem;
   font-weight: 500; color: var(--text); cursor: pointer; text-align: left; }
