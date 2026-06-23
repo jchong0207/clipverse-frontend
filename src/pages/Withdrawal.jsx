@@ -16,6 +16,8 @@ const METHODS = [
   { key: 'USDT-TRC20', cur: 'USDT-TRC20', rate: 1, icon: <UsdtIcon /> },
   { key: 'USDC-ERC20', cur: 'USDC-ERC20', rate: 1, icon: <UsdcIcon /> },
 ]
+// Flat handling fee, charged in the selected payout currency regardless of method.
+const HANDLING_FEE = 10
 
 export default function Withdrawal() {
   const { t } = useTranslation()
@@ -103,7 +105,7 @@ export default function Withdrawal() {
         <div className="wd-card wd-fees">
           <div className="wd-fee-row">
             <span className="wd-fee-label">{t('withdraw.handlingFee')}</span>
-            <span className="wd-fee-val">0 {cur}</span>
+            <span className="wd-fee-val">{HANDLING_FEE} {cur}</span>
           </div>
           <div className="wd-divider" />
           <div className="wd-fee-row">
