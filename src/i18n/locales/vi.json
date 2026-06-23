@@ -219,7 +219,8 @@
     "title": "Lịch sử thay đổi",
     "recharge": "Nạp tiền",
     "playback": "Doanh thu lượt xem",
-    "withdraw": "Rút tiền"
+    "withdraw": "Rút tiền",
+    "empty": "Chưa có lịch sử doanh thu nào."
   },
   "txhist": {
     "title": "Lịch sử giao dịch",
@@ -227,7 +228,8 @@
     "withdrawal": "Đơn rút tiền",
     "delivered": "Đã giao",
     "payoutSuccess": "Chi trả thành công",
-    "copied": "Đã sao chép mã đơn hàng"
+    "copied": "Đã sao chép mã đơn hàng",
+    "empty": "Chưa có giao dịch nào."
   },
   "deposit": {
     "title": "Nạp tiền",

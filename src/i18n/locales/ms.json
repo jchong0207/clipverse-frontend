@@ -219,7 +219,8 @@
     "title": "Rekod Perubahan",
     "recharge": "Tambah Nilai",
     "playback": "Pendapatan Tontonan",
-    "withdraw": "Keluarkan"
+    "withdraw": "Keluarkan",
+    "empty": "Tiada rekod pendapatan lagi."
   },
   "txhist": {
     "title": "Sejarah Transaksi",
@@ -227,7 +228,8 @@
     "withdrawal": "Pesanan pengeluaran",
     "delivered": "Dihantar",
     "payoutSuccess": "Pembayaran berjaya",
-    "copied": "Nombor pesanan disalin"
+    "copied": "Nombor pesanan disalin",
+    "empty": "Tiada transaksi lagi."
   },
   "deposit": {
     "title": "Deposit",

@@ -219,7 +219,8 @@
     "title": "変動記録",
     "recharge": "チャージ",
     "playback": "再生収益",
-    "withdraw": "出金"
+    "withdraw": "出金",
+    "empty": "収益履歴はまだありません。"
   },
   "txhist": {
     "title": "取引履歴",
@@ -227,7 +228,8 @@
     "withdrawal": "出金注文",
     "delivered": "納品済み",
     "payoutSuccess": "出金成功",
-    "copied": "注文番号をコピーしました"
+    "copied": "注文番号をコピーしました",
+    "empty": "取引履歴はまだありません。"
   },
   "deposit": {
     "title": "入金",

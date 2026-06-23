@@ -236,7 +236,8 @@
     "title": "Change Records",
     "recharge": "Recharge",
     "playback": "Playback Revenue",
-    "withdraw": "Withdraw"
+    "withdraw": "Withdraw",
+    "empty": "No revenue records yet."
   },
   "txhist": {
     "title": "Transaction History",
@@ -244,7 +245,8 @@
     "withdrawal": "Withdrawal order",
     "delivered": "Delivered",
     "payoutSuccess": "Payout successful",
-    "copied": "Order number copied"
+    "copied": "Order number copied",
+    "empty": "No transactions yet."
   },
   "deposit": {
     "title": "Deposit",

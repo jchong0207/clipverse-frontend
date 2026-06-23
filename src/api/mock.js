@@ -109,6 +109,33 @@ const DEMO_USERS = [
   { id: 'demo-verified', name: 'Verified Demo', email: 'verified@clipverse.com', password: 'Demo1234', creditBalance: 1000, kycStatus: 'verified' },
   { id: 'demo-zero', name: 'Zero Balance Demo', email: 'zero@clipverse.com', password: 'Demo1234', creditBalance: 0, kycStatus: 'unverified' },
 ]
+// Read-only history seeds for the primary demo account, mirroring the backend's data.sql so the
+// standalone (mock) demo shows the same Transaction / Revenue history as the real API. Every other
+// account has none, so those pages render their empty state (per-user correlation).
+const DEMO_EMAIL = 'demo@clipverse.com'
+const DEMO_TXNS = [
+  { id: '2060031411899879426', type: 'RECHARGE', amount: 90000, status: 'DELIVERED', createTime: '2026-05-29T00:12:17' },
+  { id: '2054209491434491905', type: 'RECHARGE', amount: 3291.83, status: 'DELIVERED', createTime: '2026-05-12T22:38:03' },
+  { id: '2038236390150422530', type: 'RECHARGE', amount: 5654.31, status: 'DELIVERED', createTime: '2026-03-29T20:46:39' },
+  { id: '2052058554943262722', type: 'WITHDRAWAL', amount: 500, status: 'PAYOUT_SUCCESS', createTime: '2026-05-07T00:11:00' },
+  { id: '2046484859134791682', type: 'WITHDRAWAL', amount: 4292.89, status: 'PAYOUT_SUCCESS', createTime: '2026-04-21T15:03:07' },
+  { id: '2044425285015818242', type: 'WITHDRAWAL', amount: 4299.29, status: 'PAYOUT_SUCCESS', createTime: '2026-04-15T22:39:06' },
+  { id: '2041129121206022145', type: 'WITHDRAWAL', amount: 3829, status: 'PAYOUT_SUCCESS', createTime: '2026-04-06T20:21:19' },
+  { id: '2038618451218579458', type: 'WITHDRAWAL', amount: 4521.03, status: 'PAYOUT_SUCCESS', createTime: '2026-03-30T22:04:49' },
+]
+const DEMO_REVENUE = [
+  { id: 10, type: 'RECHARGE', direction: 'IN', amount: 90000, createTime: '2026-05-29T00:12:17' },
+  { id: 9, type: 'RECHARGE', direction: 'IN', amount: 3291.83, createTime: '2026-05-12T22:38:03' },
+  { id: 8, type: 'PLAYBACK', direction: 'IN', amount: 4211.68, createTime: '2026-05-12T00:10:00' },
+  { id: 7, type: 'PLAYBACK', direction: 'IN', amount: 4144.8, createTime: '2026-05-10T00:10:00' },
+  { id: 6, type: 'PLAYBACK', direction: 'IN', amount: 1971.64, createTime: '2026-05-08T00:10:00' },
+  { id: 5, type: 'WITHDRAW', direction: 'OUT', amount: 500, createTime: '2026-05-07T00:11:00' },
+  { id: 4, type: 'PLAYBACK', direction: 'IN', amount: 1933.68, createTime: '2026-05-07T00:10:00' },
+  { id: 3, type: 'PLAYBACK', direction: 'IN', amount: 2477.12, createTime: '2026-05-05T00:10:00' },
+  { id: 2, type: 'WITHDRAW', direction: 'OUT', amount: 1200, createTime: '2026-05-03T18:42:55' },
+  { id: 1, type: 'PLAYBACK', direction: 'IN', amount: 3088.9, createTime: '2026-05-02T00:10:00' },
+]
+
 function seedDemoUsers() {
   const users = read(LS.users, [])
   let changed = false
@@ -363,5 +390,18 @@ export const mockApi = {
     const n = items.find((x) => x.id === id)
     if (n) { n.isRead = true; n.readTime = new Date().toISOString(); write('ct_notifications', items) }
     return n || null
+  },
+  async listTransactions(type) {
+    const user = requireUser()
+    await delay(120)
+    let items = user.email.toLowerCase() === DEMO_EMAIL ? DEMO_TXNS : []
+    if (type) items = items.filter((t) => t.type === type)
+    return { items, total: items.length, pageNo: 1, pageSize: 100 }
+  },
+  async listRevenue() {
+    const user = requireUser()
+    await delay(120)
+    const items = user.email.toLowerCase() === DEMO_EMAIL ? DEMO_REVENUE : []
+    return { items, total: items.length, pageNo: 1, pageSize: 100 }
   },
 }
