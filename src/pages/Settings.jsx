@@ -11,7 +11,7 @@ import {
 } from '@ant-design/icons'
 
 const GA_SECRET = 'ZDIUBQ7G5QIQJSZA'
-const WALLETS = ['USDT-ERC20/USDC', 'USDT-TRC20', 'ETH', 'BTC']
+const WALLETS = ['USDT-TRC20', 'USDT-ERC20']
 const CURRENCIES = ['USD', 'CAD']
 const BANK_FIELDS = ['fullName', 'bankAccount', 'bsb', 'payId', 'bankName']
 

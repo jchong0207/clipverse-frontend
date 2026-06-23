@@ -277,7 +277,7 @@
     "withdrawCurrency": "Mata uang penarikan",
     "fullName": "Nama Lengkap",
     "bankAccount": "Nomor Rekening Bank",
-    "bsb": "BSB",
+    "bsb": "Bank Swift Code",
     "payId": "Pay ID",
     "bankName": "Nama Bank",
     "confirmBinding": "Konfirmasi penautan"
