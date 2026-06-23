@@ -17,6 +17,39 @@ export function DocFrontSample() {
   )
 }
 
+// Bad sample: document not fully in frame — part of the card is cut off so the
+// borders are incomplete. Drawn oversized and shifted so the right/bottom edges
+// run past the viewBox and get clipped.
+export function DocCutoffSample() {
+  return (
+    <svg viewBox="0 0 100 72" className="kf-sample-svg" aria-hidden="true">
+      <rect x="22" y="20" width="110" height="80" rx="7" fill="#fff" stroke="#c4ccda" strokeWidth="2" />
+      <rect x="31" y="40" width="28" height="36" rx="4" fill="#dfe4ee" />
+      <circle cx="45" cy="52" r="8" fill="#aab2c2" />
+      <path d="M34 75c1.6-8 21-8 22.5 0z" fill="#aab2c2" />
+      <rect x="69" y="40" width="44" height="6" rx="3" fill="#cdd4e0" />
+      <rect x="69" y="54" width="48" height="6" rx="3" fill="#dde2ec" />
+    </svg>
+  )
+}
+
+// Bad sample: glare / uneven brightness — the card is fine but a bright diagonal
+// reflection washes out part of it.
+export function DocGlareSample() {
+  return (
+    <svg viewBox="0 0 100 72" className="kf-sample-svg" aria-hidden="true">
+      <rect x="3" y="3" width="94" height="66" rx="7" fill="#fff" stroke="#c4ccda" strokeWidth="2" />
+      <rect x="11" y="20" width="26" height="33" rx="4" fill="#dfe4ee" />
+      <circle cx="24" cy="31" r="7" fill="#aab2c2" />
+      <path d="M14 52c1.5-7 19-7 20.5 0z" fill="#aab2c2" />
+      <rect x="46" y="20" width="40" height="5" rx="2.5" fill="#cdd4e0" />
+      <rect x="46" y="32" width="44" height="5" rx="2.5" fill="#dde2ec" />
+      <rect x="46" y="44" width="30" height="5" rx="2.5" fill="#dde2ec" />
+      <polygon points="40,3 70,3 28,69 3,69 3,52" fill="#ffffff" opacity="0.72" />
+    </svg>
+  )
+}
+
 // ID card, back side: magnetic strip near the top + text lines.
 export function DocBackSample() {
   return (

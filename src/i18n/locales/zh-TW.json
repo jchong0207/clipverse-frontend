@@ -277,7 +277,7 @@
     "withdrawCurrency": "提現幣種",
     "fullName": "全名",
     "bankAccount": "銀行帳號",
-    "bsb": "BSB",
+    "bsb": "Bank Swift Code",
     "payId": "Pay ID",
     "bankName": "銀行名稱",
     "confirmBinding": "確認綁定"
