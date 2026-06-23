@@ -52,6 +52,7 @@ export default function SideDrawer({ open, onClose }) {
           <Dropdown
             trigger={['click']}
             menu={{
+              className: 'lang-dd-menu',
               items: LANGUAGES.map((l) => ({ key: l.code, label: l.label })),
               selectable: true,
               selectedKeys: [i18n.resolvedLanguage],
