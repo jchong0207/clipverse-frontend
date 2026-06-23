@@ -13,7 +13,7 @@ export default function LanguageMenu() {
   return (
     <Dropdown
       trigger={['click']}
-      menu={{ items, selectable: true, selectedKeys: [i18n.resolvedLanguage], onClick: ({ key }) => i18n.changeLanguage(key) }}
+      menu={{ className: 'lang-dd-menu', items, selectable: true, selectedKeys: [i18n.resolvedLanguage], onClick: ({ key }) => i18n.changeLanguage(key) }}
     >
       <Button type="text" icon={<GlobalOutlined />} size="small">
         {currentLabel} <DownOutlined style={{ fontSize: 10 }} />
