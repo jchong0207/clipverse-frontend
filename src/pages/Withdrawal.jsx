@@ -14,8 +14,7 @@ import { formatBalance } from '../utils/user.js'
 const METHODS = [
   { key: 'bank', cur: 'USD', rate: 1, icon: <BankCircle /> },
   { key: 'USDT-TRC20', cur: 'USDT-TRC20', rate: 1, icon: <UsdtIcon /> },
-  { key: 'USDT-ERC20', cur: 'USDT-ERC20', rate: 1, icon: <UsdtIcon /> },
-  { key: 'USDC', cur: 'USDC', rate: 1, icon: <UsdcIcon /> },
+  { key: 'USDC-ERC20', cur: 'USDC-ERC20', rate: 1, icon: <UsdcIcon /> },
   { key: 'ETH', cur: 'ETH', rate: 1 / 3500, icon: <EthIcon /> },
   { key: 'BTC', cur: 'BTC', rate: 1 / 65000, icon: <BtcIcon /> },
 ]
