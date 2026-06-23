@@ -5,7 +5,8 @@ import { useAuth } from '../store/auth.jsx'
 import {
   ImportOutlined, TranslationOutlined, SoundOutlined, NotificationOutlined,
 } from '@ant-design/icons'
-import HomeAnnouncement from '../components/HomeAnnouncement.jsx'
+// Home announcement popup temporarily disabled (re-enable when needed).
+// import HomeAnnouncement from '../components/HomeAnnouncement.jsx'
 
 const FEATURES = [
   { img: '/assets/img/AudioSummarization-1778224829196-c2ef1d74.png', icon: <ImportOutlined />, title: 'importTitle', sub: 'importSub', c: '#7c3aed', bg: '#f3ecff' },
@@ -54,7 +55,7 @@ export default function Home() {
 
   return (
     <div className="lp" ref={rootRef}>
-      <HomeAnnouncement />
+      {/* Home announcement popup temporarily disabled — re-enable by restoring <HomeAnnouncement /> and its import. */}
 
       <section className="lp-hero">
         {showVideo && (
