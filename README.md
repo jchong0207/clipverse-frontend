@@ -109,3 +109,5 @@ Deployed to a DigitalOcean VPS, served by Nginx over HTTPS at https://clipverse.
 - **Auto-deploy:** pushing to `main` triggers `.github/workflows/deploy.yml`, which SSHes into the droplet and runs `deploy.sh`.
 - **`deploy.sh`** (single source of truth for deploys): `git pull` → `npm ci` → `VITE_API_URL=/ npm run build` → `rsync` the built `dist/` into the Nginx web root (`/var/www/clipverse`).
 - **Real-API mode:** the build sets a non-empty `VITE_API_URL` so the app calls the backend (relative `/app-api` + `/api` paths) instead of the in-browser mock; Nginx reverse-proxies those paths to the backend.
+
+> The member app owns the domain root (`/`, `/app-api`). The internal [admin panel](https://github.com/jchong0207/clipverse-admin) shares the same domain + Nginx server block under **`/admin`** (`/admin-api` for its backend) — see that repo's `deploy/` for the Nginx snippet.
