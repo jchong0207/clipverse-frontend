@@ -1,0 +1,17 @@
+{
+  "name": "ClipVerse",
+  "short_name": "ClipVerse",
+  "description": "Professional Video Translation",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#06b6d4",
+  "icons": [
+    {
+      "src": "/assets/img/clipverse-logo.png",
+      "sizes": "737x737",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
