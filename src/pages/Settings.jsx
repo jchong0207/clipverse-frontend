@@ -31,14 +31,33 @@ export default function Settings() {
   const navigate = useNavigate()
   const { logout } = useAuth()
   const { message, modal } = App.useApp()
-  const { saveBankAccount, saveCryptoWallet } = usePaymentMethods()
+  const { bank: savedBank, usdt: savedUsdt, usdc: savedUsdc, saveBankAccount, saveCryptoWallet } = usePaymentMethods()
   const [active, setActive] = useState(null)
   const [vals, setVals] = useState({})
   const [gaCode, setGaCode] = useState('')
   const [chain, setChain] = useState(() => loadJSON('cv_blockchain'))
   const [bank, setBank] = useState(() => loadJSON('cv_bank'))
 
-  const openModal = (s) => { setVals({}); setGaCode(''); setActive(s) }
+  const openModal = (s) => {
+    setVals({}); setGaCode('')
+    if (s.kind === 'bank' && savedBank) {
+      setBank((p) => ({
+        ...p,
+        fullName: savedBank.accountName || '',
+        bankAccount: savedBank.accountNumber || '',
+        bankName: savedBank.bankName || '',
+        bsb: savedBank.bankBranch || '',
+      }))
+    }
+    if (s.kind === 'blockchain') {
+      setChain((p) => ({
+        ...p,
+        'USDT-TRC20': savedUsdt?.walletAddress || p['USDT-TRC20'] || '',
+        'USDC-ERC20': savedUsdc?.walletAddress || p['USDC-ERC20'] || '',
+      }))
+    }
+    setActive(s)
+  }
   const closeModal = () => { setActive(null); setVals({}); setGaCode('') }
 
   const setChainVal = (w, v) => setChain((p) => { const n = { ...p, [w]: v }; saveJSON('cv_blockchain', n); return n })
