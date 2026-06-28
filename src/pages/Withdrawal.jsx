@@ -9,6 +9,7 @@ import { FIAT } from '../data/fiatCurrencies.js'
 import { useAuth } from '../store/auth.jsx'
 import { usePaymentMethods } from '../store/paymentMethods.jsx'
 import { formatBalance } from '../utils/user.js'
+import { api } from '../api/client.js'
 
 // rate = units of the selected currency per 1 USDT withdrawn
 const METHODS = [
@@ -29,6 +30,7 @@ export default function Withdrawal() {
   const [amount, setAmount] = useState('')
   const [methodKey, setMethodKey] = useState('USDT-TRC20')
   const [pwd, setPwd] = useState('')
+  const [submitting, setSubmitting] = useState(false)
 
   const method = METHODS.find((m) => m.key === methodKey) || METHODS[0]
   const isBank = method.key === 'bank'
@@ -45,10 +47,40 @@ export default function Withdrawal() {
   const credited = amount ? fmtCur(gross) : '0'
   // Final amount the user receives, net of the flat handling fee (never below 0).
   const creditedNet = amount ? fmtCur(Math.max(0, gross - HANDLING_FEE)) : '0'
-  const onWithdraw = () => {
-    if (!amount || Number(amount) < 100) { message.error(t('withdraw.minError')); return }
+  const onWithdraw = async () => {
+    const num = Number(amount)
+    if (!amount || num < 100) { message.error(t('withdraw.minError')); return }
     if (!pwd) { message.error(t('withdraw.pwdError')); return }
-    message.success(t('withdraw.success'))
+
+    // Build the payout destination JSON based on the selected method.
+    let payoutDestination
+    if (isBank) {
+      const parts = []
+      if (bank?.accountName) parts.push(`"name":"${bank.accountName}"`)
+      if (bank?.accountNumber) parts.push(`"account":"${bank.accountNumber}"`)
+      parts.push('"method":"bank"')
+      payoutDestination = `{${parts.join(',')}}`
+    } else {
+      const walletEntry = methodKey === 'USDT-TRC20' ? usdt : usdc
+      const addr = walletEntry?.walletAddress || ''
+      payoutDestination = `{"address":"${addr}","method":"${methodKey}"}`
+    }
+
+    setSubmitting(true)
+    try {
+      await api.placeWithdraw({
+        withdrawCurrency: 'USDT',
+        withdrawAmount: num,
+        payoutDestination,
+        withdrawPassword: pwd,
+      })
+      message.success(t('withdraw.success'))
+      navigate('/transaction-history')
+    } catch (e) {
+      message.error(e?.message || t('withdraw.minError'))
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   return (
@@ -92,12 +124,7 @@ export default function Withdrawal() {
               <div className="wd-bc-label">{t('withdraw.realName')}</div>
               <div className="wd-bc-value">{bank?.accountName || '—'}</div>
             </div>
-            <svg className="wd-bc-chip" width="58" height="44" viewBox="0 0 58 44" aria-hidden="true">
-              <rect x="1" y="1" width="56" height="42" rx="7" fill="#ededed" stroke="#cfcfcf" />
-              <rect x="22" y="1" width="14" height="42" fill="#e3e3e3" />
-              <rect x="1" y="16" width="56" height="12" fill="#e3e3e3" />
-              <rect x="22" y="16" width="14" height="12" rx="2" fill="#f5f5f5" stroke="#cfcfcf" />
-            </svg>
+            <img src="/assets/img/clipverse-logo.png" alt="Clipverse" className="wd-bc-logo" />
           </div>
         ) : (() => {
           const walletEntry = methodKey === 'USDT-TRC20' ? usdt : methodKey === 'USDC-ERC20' ? usdc : null
@@ -152,7 +179,7 @@ export default function Withdrawal() {
       </div>
 
       <div className="wd-footer">
-        <button type="button" className="wd-submit" onClick={onWithdraw}>{t('withdraw.submit')}</button>
+        <button type="button" className="wd-submit" disabled={submitting} onClick={onWithdraw}>{t('withdraw.submit')}</button>
       </div>
     </div>
   )
