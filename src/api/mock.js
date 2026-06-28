@@ -240,6 +240,22 @@ export const mockApi = {
     return { balance: user.creditBalance }
   },
 
+  // ---- Deposits (mock) ----
+  // Standalone preview: no server, so just echo a fake stored URL and a PENDING order so the
+  // screens' success path runs end-to-end in mock mode.
+  async uploadDepositProof(file) {
+    await delay(300)
+    return { url: file ? URL.createObjectURL(file) : '/uploads/deposit-proofs/mock.png' }
+  },
+  async placeDeposit({ sourceCurrency, sourceAmount, targetCurrency, targetAmount, paymentMetadata }) {
+    const user = requireUser()
+    await delay(400)
+    addTxn(user.id, { type: 'RECHARGE', amount: Number(targetAmount) || 0, status: 'PENDING',
+      description: `Deposit ${sourceAmount} ${sourceCurrency} -> ${targetAmount} ${targetCurrency}` })
+    return { orderNo: 'WO-MOCK-' + uid(), status: 'PENDING', sourceCurrency, sourceAmount,
+      targetCurrency, targetAmount, paymentMetadata }
+  },
+
   // ---- Quotes ----
   async createQuote({ filename, durationSeconds, sourceLanguage, targetLanguage }) {
     const user = requireUser()

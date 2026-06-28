@@ -83,6 +83,14 @@ const realApi = {
   getWallet: () => http('/api/wallet'),
   buyCredits: (b) => http('/api/wallet/buy', { method: 'POST', body: b }),
   requestRefund: (b) => http('/api/wallet/refund', { method: 'POST', body: b }),
+  // Upload a deposit proof image (crypto). Multipart via the http() isForm path; returns { url }.
+  async uploadDepositProof(file) {
+    const form = new FormData()
+    form.append('file', file)
+    return http('/app-api/wallet/deposit-proof', { method: 'POST', body: form, isForm: true })
+  },
+  // Place a deposit order. paymentMetadata is a JSON string (method/coin/address/proofUrl).
+  placeDeposit: (b) => http('/app-api/wallet/order/deposit', { method: 'POST', body: b }),
   createQuote: (b) => http('/api/quotes', { method: 'POST', body: b }),
   listQuotes: () => http('/api/quotes'),
   getQuote: (id) => http(`/api/quotes/${id}`),
