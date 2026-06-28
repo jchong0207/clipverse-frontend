@@ -282,7 +282,15 @@
     "bsb": "Bank Swift Code",
     "payId": "Pay ID",
     "bankName": "은행명",
-    "confirmBinding": "연결 확인"
+    "confirmBinding": "연결 확인",
+    "accountName": "Account Holder Name",
+    "accountNumber": "Account / Card Number",
+    "bankBranch": "Branch (optional)",
+    "network": "Network (e.g. TRC-20, ERC-20)",
+    "walletAddress": "Wallet Address",
+    "saving": "Saving…",
+    "usdtWallet": "USDT Wallet",
+    "usdcWallet": "USDC Wallet"
   },
   "settings": {
     "changeLoginPwd": "로그인 비밀번호 변경",

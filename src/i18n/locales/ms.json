@@ -282,7 +282,15 @@
     "bsb": "Bank Swift Code",
     "payId": "Pay ID",
     "bankName": "Nama Bank",
-    "confirmBinding": "Sahkan pengikatan"
+    "confirmBinding": "Sahkan pengikatan",
+    "accountName": "Account Holder Name",
+    "accountNumber": "Account / Card Number",
+    "bankBranch": "Branch (optional)",
+    "network": "Network (e.g. TRC-20, ERC-20)",
+    "walletAddress": "Wallet Address",
+    "saving": "Saving…",
+    "usdtWallet": "USDT Wallet",
+    "usdcWallet": "USDC Wallet"
   },
   "settings": {
     "changeLoginPwd": "Tukar Kata Laluan Log Masuk",

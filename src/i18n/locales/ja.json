@@ -282,7 +282,15 @@
     "bsb": "Bank Swift Code",
     "payId": "Pay ID",
     "bankName": "銀行名",
-    "confirmBinding": "連携を確定"
+    "confirmBinding": "連携を確定",
+    "accountName": "Account Holder Name",
+    "accountNumber": "Account / Card Number",
+    "bankBranch": "Branch (optional)",
+    "network": "Network (e.g. TRC-20, ERC-20)",
+    "walletAddress": "Wallet Address",
+    "saving": "Saving…",
+    "usdtWallet": "USDT Wallet",
+    "usdcWallet": "USDC Wallet"
   },
   "settings": {
     "changeLoginPwd": "ログインパスワードを変更",

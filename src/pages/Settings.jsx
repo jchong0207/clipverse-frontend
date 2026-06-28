@@ -1,19 +1,16 @@
 import { useState } from 'react'
 import SubPageHeader from '../components/SubPageHeader.jsx'
-import { loadJSON, saveJSON } from '../utils/storage.js'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { App, Dropdown } from 'antd'
+import { App } from 'antd'
 import { useAuth } from '../store/auth.jsx'
+import { usePaymentMethods } from '../store/paymentMethods.jsx'
 import {
   LockOutlined, SafetyOutlined, GoogleOutlined, WalletOutlined, CreditCardOutlined,
-  DeleteOutlined, LogoutOutlined, RightOutlined, CloseOutlined, CopyOutlined, DownOutlined,
+  DeleteOutlined, LogoutOutlined, RightOutlined, CloseOutlined, CopyOutlined,
 } from '@ant-design/icons'
 
 const GA_SECRET = 'ZDIUBQ7G5QIQJSZA'
-const WALLETS = ['USDT-TRC20', 'USDC-ERC20']
-const CURRENCIES = ['USD', 'CAD']
-const BANK_FIELDS = ['fullName', 'bankAccount', 'bsb', 'payId', 'bankName']
 
 const SECURITY = [
   { key: 'changeLoginPwd', icon: <LockOutlined />, kind: 'pwd' },
@@ -29,18 +26,34 @@ export default function Settings() {
   const navigate = useNavigate()
   const { logout } = useAuth()
   const { message, modal } = App.useApp()
+  const { bank, usdt, usdc, saveBankAccount, saveCryptoWallet } = usePaymentMethods()
+  const [saving, setSaving] = useState(false)
   const [active, setActive] = useState(null)
   const [vals, setVals] = useState({})
   const [gaCode, setGaCode] = useState('')
-  const [chain, setChain] = useState(() => loadJSON('cv_blockchain'))
-  const [bank, setBank] = useState(() => loadJSON('cv_bank'))
+  const [bankForm, setBankForm] = useState({})
+  const [cryptoForms, setCryptoForms] = useState({ USDT: {}, USDC: {} })
 
-  const openModal = (s) => { setVals({}); setGaCode(''); setActive(s) }
+  const openModal = (s) => {
+    setVals({})
+    setGaCode('')
+    if (s.kind === 'bank') {
+      setBankForm({
+        accountName: bank?.accountName || '',
+        bankName: bank?.bankName || '',
+        accountNumber: bank?.accountNumber || '',
+        bankBranch: bank?.bankBranch || '',
+      })
+    }
+    if (s.kind === 'blockchain') {
+      setCryptoForms({
+        USDT: { network: usdt?.network || '', walletAddress: usdt?.walletAddress || '' },
+        USDC: { network: usdc?.network || '', walletAddress: usdc?.walletAddress || '' },
+      })
+    }
+    setActive(s)
+  }
   const closeModal = () => { setActive(null); setVals({}); setGaCode('') }
-
-  const setChainVal = (w, v) => setChain((p) => { const n = { ...p, [w]: v }; saveJSON('cv_blockchain', n); return n })
-  const setBankVal = (k, v) => setBank((p) => { const n = { ...p, [k]: v }; saveJSON('cv_bank', n); return n })
-  const bankCurrency = bank.currency || 'USD'
 
   const onClearCache = async () => {
     // Clear all of this site's (origin's) client-side storage
@@ -64,7 +77,6 @@ export default function Settings() {
         await Promise.all(dbs.map((d) => d.name && indexedDB.deleteDatabase(d.name)))
       }
     } catch { /* noop */ }
-    setChain({}); setBank({})
     message.success(t('settings.cacheCleared'))
   }
   const onLogout = () => {
@@ -85,8 +97,36 @@ export default function Settings() {
     message.success(t('settings.updated')); closeModal()
   }
   const onBindGa = () => { message.success(t('settings.bound')); closeModal() }
-  const onSaveChain = () => message.success(t('settlement.saved'))
-  const onBindBank = () => { message.success(t('settlement.bound')); closeModal() }
+  const onSaveChain = async (currency) => {
+    const form = cryptoForms[currency]
+    if (!form.walletAddress) { message.error(t('settlement.pleaseEnter')); return }
+    setSaving(true)
+    try {
+      await saveCryptoWallet({ currency, network: form.network, walletAddress: form.walletAddress })
+      message.success(t('settlement.saved'))
+    } catch (err) {
+      message.error(err?.message || t('settlement.pleaseEnter'))
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  const onBindBank = async () => {
+    if (!bankForm.accountName || !bankForm.bankName || !bankForm.accountNumber) {
+      message.error(t('settlement.pleaseEnter'))
+      return
+    }
+    setSaving(true)
+    try {
+      await saveBankAccount(bankForm)
+      message.success(t('settlement.bound'))
+      closeModal()
+    } catch (err) {
+      message.error(err?.message || t('settlement.pleaseEnter'))
+    } finally {
+      setSaving(false)
+    }
+  }
   const copyKey = async () => { try { await navigator.clipboard.writeText(GA_SECRET); message.success(t('settings.copied')) } catch { /* noop */ } }
 
   return (
@@ -152,31 +192,39 @@ export default function Settings() {
               </>
             )}
 
-            {active.kind === 'blockchain' && WALLETS.map((w) => (
-              <div className="stm-wallet" key={w}>
-                <div className="stm-wlabel">{w}</div>
+            {active.kind === 'blockchain' && ['USDT', 'USDC'].map((cur) => (
+              <div className="stm-wallet" key={cur}>
+                <div className="stm-wlabel">{t(`settlement.${cur.toLowerCase()}Wallet`)}</div>
+                <div>
+                  <label className="stm-flabel">{t('settlement.network')}</label>
+                  <input className="stm-finput" placeholder={t('settlement.pleaseEnter')}
+                    value={cryptoForms[cur].network}
+                    onChange={(e) => setCryptoForms((p) => ({ ...p, [cur]: { ...p[cur], network: e.target.value } }))} />
+                </div>
                 <div className="stm-row">
-                  <input className="stm-rowinput" placeholder={t('settlement.pleaseEnter')}
-                    value={chain[w] || ''} onChange={(e) => setChainVal(w, e.target.value)} />
-                  <button type="button" className="stm-save" onClick={onSaveChain}>{t('settlement.save')}</button>
+                  <input className="stm-rowinput" placeholder={t('settlement.walletAddress')}
+                    value={cryptoForms[cur].walletAddress}
+                    onChange={(e) => setCryptoForms((p) => ({ ...p, [cur]: { ...p[cur], walletAddress: e.target.value } }))} />
+                  <button type="button" className="stm-save" disabled={saving} onClick={() => onSaveChain(cur)}>
+                    {saving ? t('settlement.saving') : t('settlement.save')}
+                  </button>
                 </div>
               </div>
             ))}
 
             {active.kind === 'bank' && (
               <>
-                <label className="stm-flabel">{t('settlement.withdrawCurrency')}</label>
-                <Dropdown trigger={['click']} menu={{ items: CURRENCIES.map((c) => ({ key: c, label: c })), selectable: true, selectedKeys: [bankCurrency], onClick: ({ key }) => setBankVal('currency', key) }}>
-                  <button type="button" className="stm-dd"><span>{bankCurrency}</span><DownOutlined className="stm-dd-caret" /></button>
-                </Dropdown>
-                {BANK_FIELDS.map((f) => (
+                {['accountName', 'bankName', 'accountNumber', 'bankBranch'].map((f) => (
                   <div key={f}>
                     <label className="stm-flabel">{t(`settlement.${f}`)}</label>
                     <input className="stm-finput" placeholder={t('settlement.pleaseEnter')}
-                      value={bank[f] || ''} onChange={(e) => setBankVal(f, e.target.value)} />
+                      value={bankForm[f] || ''}
+                      onChange={(e) => setBankForm((p) => ({ ...p, [f]: e.target.value }))} />
                   </div>
                 ))}
-                <button type="button" className="stm-confirm" onClick={onBindBank}>{t('settlement.confirmBinding')}</button>
+                <button type="button" className="stm-confirm" disabled={saving} onClick={onBindBank}>
+                  {saving ? t('settlement.saving') : t('settlement.confirmBinding')}
+                </button>
               </>
             )}
           </div>

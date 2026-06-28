@@ -299,7 +299,15 @@
     "bsb": "Bank Swift Code",
     "payId": "Pay ID",
     "bankName": "Bank Name",
-    "confirmBinding": "Confirm binding"
+    "confirmBinding": "Confirm binding",
+    "accountName": "Account Holder Name",
+    "accountNumber": "Account / Card Number",
+    "bankBranch": "Branch (optional)",
+    "network": "Network (e.g. TRC-20, ERC-20)",
+    "walletAddress": "Wallet Address",
+    "saving": "Saving…",
+    "usdtWallet": "USDT Wallet",
+    "usdcWallet": "USDC Wallet"
   },
   "settings": {
     "changeLoginPwd": "Change Login Password",
