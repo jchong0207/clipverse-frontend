@@ -99,25 +99,38 @@ export default function Withdrawal() {
               <rect x="22" y="16" width="14" height="12" rx="2" fill="#f5f5f5" stroke="#cfcfcf" />
             </svg>
           </div>
-        ) : (
-          <div className="wd-card wd-bind">
-            {(() => {
-              const walletEntry = methodKey === 'USDT-TRC20' ? usdt : methodKey === 'USDC-ERC20' ? usdc : null
-              if (walletEntry?.walletAddress) {
-                return (
-                  <div className="wd-bc-field">
-                    <div className="wd-bc-label">{methodKey}</div>
-                    <div className="wd-bc-value" style={{ wordBreak: 'break-all', fontSize: 12 }}>{walletEntry.walletAddress}</div>
-                  </div>
-                )
-              }
-              return (
-                <button type="button" className="wd-bind-text" onClick={() => navigate('/settings')}>{t('withdraw.bindWallet')}</button>
-              )
-            })()}
-            <button type="button" className="wd-unbind" onClick={() => navigate('/settings')}>{t('withdraw.unbind')} <RightOutlined /></button>
-          </div>
-        )}
+        ) : (() => {
+          const walletEntry = methodKey === 'USDT-TRC20' ? usdt : methodKey === 'USDC-ERC20' ? usdc : null
+          const isUsdt = methodKey === 'USDT-TRC20'
+          if (walletEntry?.walletAddress) {
+            const addr = walletEntry.walletAddress
+            const truncated = addr.length > 16 ? `${addr.slice(0, 8)}…${addr.slice(-8)}` : addr
+            return (
+              <div className={`wd-walletcard${isUsdt ? ' wd-walletcard--usdt' : ' wd-walletcard--usdc'}`}>
+                <div className="wd-wc-top">
+                  <div className="wd-wc-coin">{isUsdt ? <UsdtIcon /> : <UsdcIcon />}</div>
+                  <div className="wd-wc-currency">{isUsdt ? 'USDT' : 'USDC'}</div>
+                  {walletEntry.network && <span className="wd-wc-network">{walletEntry.network}</span>}
+                </div>
+                <div className="wd-wc-addr-label">{t('withdraw.walletAddress')}</div>
+                <div className="wd-wc-addr" title={addr}>{truncated}</div>
+                <button type="button" className="wd-wc-change" onClick={() => navigate('/settings')}>
+                  {t('withdraw.changeWallet')} <RightOutlined />
+                </button>
+              </div>
+            )
+          }
+          return (
+            <button type="button" className="wd-unbound-wallet" onClick={() => navigate('/settings')}>
+              <span className="wd-unbound-icon">{isUsdt ? <UsdtIcon /> : <UsdcIcon />}</span>
+              <span className="wd-unbound-text">
+                <span className="wd-unbound-title">{t('withdraw.bindWallet')}</span>
+                <span className="wd-unbound-hint">{t('withdraw.bindWalletHint')}</span>
+              </span>
+              <RightOutlined className="wd-unbound-chev" />
+            </button>
+          )
+        })()}
 
         <div className="wd-card wd-fees">
           <div className="wd-fee-row">
