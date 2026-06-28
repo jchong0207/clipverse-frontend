@@ -56,7 +56,7 @@ export default function CryptoDeposit() {
         paymentMetadata: JSON.stringify({ method: 'crypto', coin: sel.key, address: sel.address, proofUrl: url }),
       })
       message.success(t('deposit.success'))
-      navigate('/transaction-history')
+      navigate('/account')
     } catch (e) {
       message.error(e?.message || t('deposit.minError'))
     } finally {

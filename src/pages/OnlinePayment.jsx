@@ -40,7 +40,7 @@ export default function OnlinePayment() {
         paymentMetadata: JSON.stringify({ method: 'online', fiat: code, rate: fiat.rate }),
       })
       message.success(t('deposit.success'))
-      navigate('/transaction-history')
+      navigate('/account')
     } catch (e) {
       message.error(e?.message || t('deposit.minError'))
     } finally {

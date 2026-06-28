@@ -83,7 +83,7 @@ export default function Withdrawal() {
         withdrawPassword: pwd,
       })
       message.success(t('withdraw.success'))
-      navigate('/transaction-history')
+      navigate('/account')
     } catch (e) {
       message.error(e?.message || t('withdraw.minError'))
     } finally {
