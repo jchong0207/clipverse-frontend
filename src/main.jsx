@@ -7,6 +7,7 @@ import { AuthProvider } from './store/auth.jsx'
 import { VideosProvider } from './store/videos.jsx'
 import { DeployHistoryProvider } from './store/deploys.jsx'
 import { NotificationProvider } from './store/notifications.jsx'
+import { PaymentMethodProvider } from './store/paymentMethods.jsx'
 import './i18n/index.js'
 import './index.css'
 
@@ -27,13 +28,15 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       <AntApp>
         <BrowserRouter>
           <AuthProvider>
-            <VideosProvider>
-              <DeployHistoryProvider>
-                <NotificationProvider>
-                  <App />
-                </NotificationProvider>
-              </DeployHistoryProvider>
-            </VideosProvider>
+            <PaymentMethodProvider>
+              <VideosProvider>
+                <DeployHistoryProvider>
+                  <NotificationProvider>
+                    <App />
+                  </NotificationProvider>
+                </DeployHistoryProvider>
+              </VideosProvider>
+            </PaymentMethodProvider>
           </AuthProvider>
         </BrowserRouter>
       </AntApp>
