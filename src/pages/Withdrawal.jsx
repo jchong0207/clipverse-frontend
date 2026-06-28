@@ -55,15 +55,19 @@ export default function Withdrawal() {
     // Build the payout destination JSON based on the selected method.
     let payoutDestination
     if (isBank) {
-      const parts = []
-      if (bank?.accountName) parts.push(`"name":"${bank.accountName}"`)
-      if (bank?.accountNumber) parts.push(`"account":"${bank.accountNumber}"`)
-      parts.push('"method":"bank"')
-      payoutDestination = `{${parts.join(',')}}`
+      const obj = { method: 'bank' }
+      if (bank?.accountName) obj.name = bank.accountName
+      if (bank?.accountNumber) obj.account = bank.accountNumber
+      payoutDestination = JSON.stringify(obj)
     } else {
       const walletEntry = methodKey === 'USDT-TRC20' ? usdt : usdc
       const addr = walletEntry?.walletAddress || ''
-      payoutDestination = `{"address":"${addr}","method":"${methodKey}"}`
+      payoutDestination = JSON.stringify({ address: addr, method: methodKey })
+    }
+
+    if (!isBank && !JSON.parse(payoutDestination).address) {
+      message.error(t('withdraw.bindWallet'))
+      return
     }
 
     setSubmitting(true)
