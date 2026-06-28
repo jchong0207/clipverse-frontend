@@ -420,4 +420,48 @@ export const mockApi = {
     const items = user.email.toLowerCase() === DEMO_EMAIL ? DEMO_REVENUE : []
     return { items, total: items.length, pageNo: 1, pageSize: 100 }
   },
+
+  // ---- Payment methods ----
+  async listPaymentMethods() {
+    await delay(200)
+    return read('cv_payment_methods', [])
+  },
+  async saveBankAccount(body) {
+    await delay(250)
+    const list = read('cv_payment_methods', [])
+    const existing = list.findIndex((m) => m.type === 'BANK')
+    const entry = {
+      id: existing >= 0 ? list[existing].id : uid(),
+      type: 'BANK',
+      currency: null,
+      accountName: body.accountName,
+      bankName: body.bankName,
+      accountNumber: body.accountNumber,
+      bankBranch: body.bankBranch || null,
+      network: null,
+      walletAddress: null,
+    }
+    if (existing >= 0) list[existing] = entry; else list.push(entry)
+    write('cv_payment_methods', list)
+    return null
+  },
+  async saveCryptoWallet(body) {
+    await delay(250)
+    const list = read('cv_payment_methods', [])
+    const existing = list.findIndex((m) => m.type === 'CRYPTO' && m.currency === body.currency)
+    const entry = {
+      id: existing >= 0 ? list[existing].id : uid(),
+      type: 'CRYPTO',
+      currency: body.currency,
+      accountName: null,
+      bankName: null,
+      accountNumber: null,
+      bankBranch: null,
+      network: body.network,
+      walletAddress: body.walletAddress,
+    }
+    if (existing >= 0) list[existing] = entry; else list.push(entry)
+    write('cv_payment_methods', list)
+    return null
+  },
 }

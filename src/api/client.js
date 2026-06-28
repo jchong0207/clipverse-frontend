@@ -130,6 +130,15 @@ const realApi = {
   async listRevenue() {
     return http('/app-api/member/revenue/page?pageSize=100')
   },
+  async listPaymentMethods() {
+    return http('/app-api/member/payment/list')
+  },
+  async saveBankAccount(body) {
+    return http('/app-api/member/payment/bank/save', { method: 'POST', body })
+  },
+  async saveCryptoWallet(body) {
+    return http('/app-api/member/payment/crypto/save', { method: 'POST', body })
+  },
 }
 
 const impl = USE_REAL ? realApi : mockApi
