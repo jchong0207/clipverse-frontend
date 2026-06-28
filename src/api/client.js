@@ -91,6 +91,8 @@ const realApi = {
   },
   // Place a deposit order. paymentMetadata is a JSON string (method/coin/address/proofUrl).
   placeDeposit: (b) => http('/app-api/wallet/order/deposit', { method: 'POST', body: b }),
+  // Place a withdrawal order. payoutDestination is a compact JSON string (address/account + method).
+  placeWithdraw: (b) => http('/app-api/wallet/order/withdraw', { method: 'POST', body: b }),
   createQuote: (b) => http('/api/quotes', { method: 'POST', body: b }),
   listQuotes: () => http('/api/quotes'),
   getQuote: (id) => http(`/api/quotes/${id}`),

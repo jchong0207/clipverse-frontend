@@ -256,6 +256,16 @@ export const mockApi = {
       targetCurrency, targetAmount, paymentMetadata }
   },
 
+  async placeWithdraw({ withdrawCurrency, withdrawAmount, payoutDestination, withdrawPassword }) {
+    const user = requireUser()
+    if (!withdrawPassword) throw { status: 400, message: 'Withdraw password required' }
+    await delay(400)
+    addTxn(user.id, { type: 'WITHDRAWAL', amount: Number(withdrawAmount) || 0, status: 'PENDING',
+      description: `Withdraw ${withdrawAmount} ${withdrawCurrency} to ${payoutDestination}` })
+    return { orderNo: 'WO-W-MOCK-' + uid(), status: 'PENDING', withdrawCurrency, withdrawAmount,
+      payoutDestination }
+  },
+
   // ---- Quotes ----
   async createQuote({ filename, durationSeconds, sourceLanguage, targetLanguage }) {
     const user = requireUser()
