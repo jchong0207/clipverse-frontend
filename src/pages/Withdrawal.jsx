@@ -6,8 +6,8 @@ import { DownOutlined, RightOutlined } from '@ant-design/icons'
 import SubPageHeader from '../components/SubPageHeader.jsx'
 import { UsdtIcon, UsdcIcon, BankCircle } from '../components/cryptoIcons.jsx'
 import { FIAT } from '../data/fiatCurrencies.js'
-import { loadJSON } from '../utils/storage.js'
 import { useAuth } from '../store/auth.jsx'
+import { usePaymentMethods } from '../store/paymentMethods.jsx'
 import { formatBalance } from '../utils/user.js'
 
 // rate = units of the selected currency per 1 USDT withdrawn
@@ -24,16 +24,16 @@ export default function Withdrawal() {
   const navigate = useNavigate()
   const { message } = App.useApp()
   const { user } = useAuth()
+  const { bank, usdt, usdc } = usePaymentMethods()
   const balance = formatBalance(user?.walletBalance)
   const [amount, setAmount] = useState('')
   const [methodKey, setMethodKey] = useState('USDT-TRC20')
   const [pwd, setPwd] = useState('')
-  const [bank] = useState(() => loadJSON('cv_bank'))
 
   const method = METHODS.find((m) => m.key === methodKey) || METHODS[0]
   const isBank = method.key === 'bank'
-  // Bank payouts use the currency bound on the bank card (USD / CAD); convert USDT -> that currency.
-  const bankCur = bank.currency || 'USD'
+  // Bank payouts always use USD (no longer read from bank object).
+  const bankCur = 'USD'
   const bankFiat = FIAT.find((f) => f.code === bankCur)
   const cur = isBank ? bankCur : method.cur
   const rate = isBank ? (bankFiat ? 1 / bankFiat.rate : 1) : method.rate
@@ -86,11 +86,11 @@ export default function Withdrawal() {
           <div className="wd-bankcard">
             <div className="wd-bc-field">
               <div className="wd-bc-label">{t('withdraw.bankCardNumber')}</div>
-              <div className="wd-bc-value">{bank.bankAccount || '—'}</div>
+              <div className="wd-bc-value">{bank?.accountNumber || '—'}</div>
             </div>
             <div className="wd-bc-field">
               <div className="wd-bc-label">{t('withdraw.realName')}</div>
-              <div className="wd-bc-value">{bank.fullName || '—'}</div>
+              <div className="wd-bc-value">{bank?.accountName || '—'}</div>
             </div>
             <svg className="wd-bc-chip" width="58" height="44" viewBox="0 0 58 44" aria-hidden="true">
               <rect x="1" y="1" width="56" height="42" rx="7" fill="#ededed" stroke="#cfcfcf" />
@@ -101,7 +101,20 @@ export default function Withdrawal() {
           </div>
         ) : (
           <div className="wd-card wd-bind">
-            <button type="button" className="wd-bind-text" onClick={() => navigate('/settings')}>{t('withdraw.bindWallet')}</button>
+            {(() => {
+              const walletEntry = methodKey === 'USDT-TRC20' ? usdt : methodKey === 'USDC-ERC20' ? usdc : null
+              if (walletEntry?.walletAddress) {
+                return (
+                  <div className="wd-bc-field">
+                    <div className="wd-bc-label">{methodKey}</div>
+                    <div className="wd-bc-value" style={{ wordBreak: 'break-all', fontSize: 12 }}>{walletEntry.walletAddress}</div>
+                  </div>
+                )
+              }
+              return (
+                <button type="button" className="wd-bind-text" onClick={() => navigate('/settings')}>{t('withdraw.bindWallet')}</button>
+              )
+            })()}
             <button type="button" className="wd-unbind" onClick={() => navigate('/settings')}>{t('withdraw.unbind')} <RightOutlined /></button>
           </div>
         )}
