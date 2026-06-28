@@ -5,12 +5,14 @@ import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { App, Dropdown } from 'antd'
 import { useAuth } from '../store/auth.jsx'
+import { usePaymentMethods } from '../store/paymentMethods.jsx'
 import {
   LockOutlined, SafetyOutlined, GoogleOutlined, WalletOutlined, CreditCardOutlined,
   DeleteOutlined, LogoutOutlined, RightOutlined, CloseOutlined, CopyOutlined, DownOutlined,
 } from '@ant-design/icons'
 
 const GA_SECRET = 'ZDIUBQ7G5QIQJSZA'
+const WALLET_META = { 'USDT-TRC20': { currency: 'USDT', network: 'TRC-20' }, 'USDC-ERC20': { currency: 'USDC', network: 'ERC-20' } }
 const WALLETS = ['USDT-TRC20', 'USDC-ERC20']
 const CURRENCIES = ['USD', 'CAD']
 const BANK_FIELDS = ['fullName', 'bankAccount', 'bsb', 'payId', 'bankName']
@@ -29,6 +31,7 @@ export default function Settings() {
   const navigate = useNavigate()
   const { logout } = useAuth()
   const { message, modal } = App.useApp()
+  const { saveBankAccount, saveCryptoWallet } = usePaymentMethods()
   const [active, setActive] = useState(null)
   const [vals, setVals] = useState({})
   const [gaCode, setGaCode] = useState('')
@@ -85,8 +88,28 @@ export default function Settings() {
     message.success(t('settings.updated')); closeModal()
   }
   const onBindGa = () => { message.success(t('settings.bound')); closeModal() }
-  const onSaveChain = () => message.success(t('settlement.saved'))
-  const onBindBank = () => { message.success(t('settlement.bound')); closeModal() }
+  const onSaveChain = async (w) => {
+    const addr = chain[w] || ''
+    if (!addr) { message.error(t('settlement.pleaseEnter')); return }
+    const { currency, network } = WALLET_META[w]
+    try {
+      await saveCryptoWallet({ currency, network, walletAddress: addr })
+      message.success(t('settlement.saved'))
+    } catch (err) {
+      message.error(err?.message || t('settlement.pleaseEnter'))
+    }
+  }
+  const onBindBank = async () => {
+    if (!bank.fullName || !bank.bankAccount || !bank.bankName) {
+      message.error(t('settlement.pleaseEnter')); return
+    }
+    try {
+      await saveBankAccount({ accountName: bank.fullName, bankName: bank.bankName, accountNumber: bank.bankAccount, bankBranch: bank.bsb || null })
+      message.success(t('settlement.bound')); closeModal()
+    } catch (err) {
+      message.error(err?.message || t('settlement.pleaseEnter'))
+    }
+  }
   const copyKey = async () => { try { await navigator.clipboard.writeText(GA_SECRET); message.success(t('settings.copied')) } catch { /* noop */ } }
 
   return (
@@ -158,7 +181,7 @@ export default function Settings() {
                 <div className="stm-row">
                   <input className="stm-rowinput" placeholder={t('settlement.pleaseEnter')}
                     value={chain[w] || ''} onChange={(e) => setChainVal(w, e.target.value)} />
-                  <button type="button" className="stm-save" onClick={onSaveChain}>{t('settlement.save')}</button>
+                  <button type="button" className="stm-save" onClick={() => onSaveChain(w)}>{t('settlement.save')}</button>
                 </div>
               </div>
             ))}
