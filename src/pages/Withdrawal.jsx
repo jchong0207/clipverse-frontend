@@ -52,6 +52,17 @@ export default function Withdrawal() {
     if (!amount || num < 100) { message.error(t('withdraw.minError')); return }
     if (!pwd) { message.error(t('withdraw.pwdError')); return }
 
+    if (isBank && !bank?.accountName && !bank?.accountNumber) {
+      message.error(t('withdraw.bindWallet'))
+      return
+    }
+    const walletEntry = !isBank ? (methodKey === 'USDT-TRC20' ? usdt : usdc) : null
+    const addr = walletEntry?.walletAddress || ''
+    if (!isBank && !addr) {
+      message.error(t('withdraw.bindWallet'))
+      return
+    }
+
     // Build the payout destination JSON based on the selected method.
     let payoutDestination
     if (isBank) {
@@ -60,18 +71,7 @@ export default function Withdrawal() {
       if (bank?.accountNumber) obj.account = bank.accountNumber
       payoutDestination = JSON.stringify(obj)
     } else {
-      const walletEntry = methodKey === 'USDT-TRC20' ? usdt : usdc
-      const addr = walletEntry?.walletAddress || ''
       payoutDestination = JSON.stringify({ address: addr, method: methodKey })
-    }
-
-    if (isBank && !bank?.accountName && !bank?.accountNumber) {
-      message.error(t('withdraw.bindWallet'))
-      return
-    }
-    if (!isBank && !JSON.parse(payoutDestination).address) {
-      message.error(t('withdraw.bindWallet'))
-      return
     }
 
     setSubmitting(true)
