@@ -12,6 +12,11 @@ import {
 
 const GA_SECRET = 'ZDIUBQ7G5QIQJSZA'
 
+const CRYPTO_NETWORKS = {
+  USDT: ['TRC-20', 'ERC-20', 'BEP-20'],
+  USDC: ['ERC-20', 'BEP-20', 'SOL'],
+}
+
 const SECURITY = [
   { key: 'changeLoginPwd', icon: <LockOutlined />, kind: 'pwd' },
   { key: 'changeWithdrawPwd', icon: <SafetyOutlined />, kind: 'pwd' },
@@ -47,8 +52,8 @@ export default function Settings() {
     }
     if (s.kind === 'blockchain') {
       setCryptoForms({
-        USDT: { network: usdt?.network || '', walletAddress: usdt?.walletAddress || '' },
-        USDC: { network: usdc?.network || '', walletAddress: usdc?.walletAddress || '' },
+        USDT: { network: usdt?.network || CRYPTO_NETWORKS.USDT[0], walletAddress: usdt?.walletAddress || '' },
+        USDC: { network: usdc?.network || CRYPTO_NETWORKS.USDC[0], walletAddress: usdc?.walletAddress || '' },
       })
     }
     setActive(s)
@@ -195,11 +200,15 @@ export default function Settings() {
             {active.kind === 'blockchain' && ['USDT', 'USDC'].map((cur) => (
               <div className="stm-wallet" key={cur}>
                 <div className="stm-wlabel">{t(`settlement.${cur.toLowerCase()}Wallet`)}</div>
-                <div>
-                  <label className="stm-flabel">{t('settlement.network')}</label>
-                  <input className="stm-finput" placeholder={t('settlement.pleaseEnter')}
-                    value={cryptoForms[cur].network}
-                    onChange={(e) => setCryptoForms((p) => ({ ...p, [cur]: { ...p[cur], network: e.target.value } }))} />
+                <div className="stm-net-pills">
+                  {CRYPTO_NETWORKS[cur].map((net) => (
+                    <button
+                      key={net}
+                      type="button"
+                      className={`stm-net-pill${cryptoForms[cur].network === net ? ' active' : ''}`}
+                      onClick={() => setCryptoForms((p) => ({ ...p, [cur]: { ...p[cur], network: net } }))}
+                    >{net}</button>
+                  ))}
                 </div>
                 <div className="stm-row">
                   <input className="stm-rowinput" placeholder={t('settlement.walletAddress')}
