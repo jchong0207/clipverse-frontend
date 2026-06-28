@@ -65,6 +65,10 @@ export default function Withdrawal() {
       payoutDestination = JSON.stringify({ address: addr, method: methodKey })
     }
 
+    if (isBank && !bank?.accountName && !bank?.accountNumber) {
+      message.error(t('withdraw.bindWallet'))
+      return
+    }
     if (!isBank && !JSON.parse(payoutDestination).address) {
       message.error(t('withdraw.bindWallet'))
       return

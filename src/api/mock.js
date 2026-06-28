@@ -258,7 +258,9 @@ export const mockApi = {
 
   async placeWithdraw({ withdrawCurrency, withdrawAmount, payoutDestination, withdrawPassword }) {
     const user = requireUser()
-    if (!withdrawPassword) throw { status: 400, message: 'Withdraw password required' }
+    if (!withdrawPassword || withdrawPassword !== user.password) {
+      throw { status: 400, message: 'Invalid withdraw password' }
+    }
     await delay(400)
     addTxn(user.id, { type: 'WITHDRAWAL', amount: Number(withdrawAmount) || 0, status: 'PENDING',
       description: `Withdraw ${withdrawAmount} ${withdrawCurrency} to ${payoutDestination}` })
