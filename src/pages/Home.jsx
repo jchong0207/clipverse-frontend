@@ -5,8 +5,8 @@ import { useAuth } from '../store/auth.jsx'
 import {
   ImportOutlined, TranslationOutlined, SoundOutlined, NotificationOutlined,
 } from '@ant-design/icons'
-// Home announcement popup temporarily disabled (re-enable when needed).
-// import HomeAnnouncement from '../components/HomeAnnouncement.jsx'
+import HomeAnnouncement from '../components/HomeAnnouncement.jsx'
+import { usePopups } from '../store/popups.jsx'
 
 const FEATURES = [
   { img: '/assets/img/AudioSummarization-1778224829196-c2ef1d74.png', icon: <ImportOutlined />, title: 'importTitle', sub: 'importSub', c: '#7c3aed', bg: '#f3ecff' },
@@ -25,6 +25,12 @@ const LANG_ROWS = [
 export default function Home() {
   const { user } = useAuth()
   const { t } = useTranslation()
+  const popups = usePopups()
+
+  useEffect(() => {
+    if (user) popups.fetchOnHomeVisit()
+  }, [user])
+
   // Try Now: go to the video section if logged in, otherwise to login/register
   const ctaTo = user ? '/videos' : '/login'
   // Optional licensed background video at /public/assets/video/hero.mp4; falls back to animated CSS water.
@@ -55,7 +61,7 @@ export default function Home() {
 
   return (
     <div className="lp" ref={rootRef}>
-      {/* Home announcement popup temporarily disabled — re-enable by restoring <HomeAnnouncement /> and its import. */}
+      <HomeAnnouncement />
 
       <section className="lp-hero">
         {showVideo && (
