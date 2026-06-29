@@ -476,4 +476,8 @@ export const mockApi = {
     write('cv_payment_methods', list)
     return null
   },
+  popup: {
+    pending: async () => [],
+    seen: async () => {},
+  },
 }

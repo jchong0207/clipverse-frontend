@@ -141,6 +141,10 @@ const realApi = {
   async saveCryptoWallet(body) {
     return http('/app-api/member/payment/crypto/save', { method: 'POST', body })
   },
+  popup: {
+    pending: () => http('/app-api/popup/pending'),
+    seen: (id) => http('/app-api/popup/seen', { method: 'POST', body: { popupId: id } }),
+  },
 }
 
 const impl = USE_REAL ? realApi : mockApi
