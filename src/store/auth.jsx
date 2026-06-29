@@ -1,13 +1,11 @@
 import { createContext, useContext, useEffect, useState } from 'react'
 import { api, getToken } from '../api/client.js'
-import { usePopups } from './popups.jsx'
 
 const AuthContext = createContext(null)
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
-  const popups = usePopups()
 
   useEffect(() => {
     let active = true
@@ -32,14 +30,12 @@ export function AuthProvider({ children }) {
   const login = async (creds) => {
     const r = await api.login(creds)
     setUser(r.user)
-    popups.fetchOnLogin()
     return r
   }
 
   const register = async (info) => {
     const r = await api.register(info)
     setUser(r.user)
-    popups.fetchOnLogin()
     return r
   }
 

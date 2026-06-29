@@ -5,8 +5,6 @@ import { useAuth } from '../store/auth.jsx'
 import {
   ImportOutlined, TranslationOutlined, SoundOutlined, NotificationOutlined,
 } from '@ant-design/icons'
-import HomeAnnouncement from '../components/HomeAnnouncement.jsx'
-import { usePopups } from '../store/popups.jsx'
 
 const FEATURES = [
   { img: '/assets/img/AudioSummarization-1778224829196-c2ef1d74.png', icon: <ImportOutlined />, title: 'importTitle', sub: 'importSub', c: '#7c3aed', bg: '#f3ecff' },
@@ -25,11 +23,6 @@ const LANG_ROWS = [
 export default function Home() {
   const { user } = useAuth()
   const { t } = useTranslation()
-  const { fetchOnHomeVisit } = usePopups()
-
-  useEffect(() => {
-    if (user) fetchOnHomeVisit()
-  }, [user, fetchOnHomeVisit])
 
   // Try Now: go to the video section if logged in, otherwise to login/register
   const ctaTo = user ? '/videos' : '/login'
@@ -61,8 +54,6 @@ export default function Home() {
 
   return (
     <div className="lp" ref={rootRef}>
-      <HomeAnnouncement />
-
       <section className="lp-hero">
         {showVideo && (
           <video ref={heroVideoRef} className="lp-hero-video" autoPlay muted loop playsInline

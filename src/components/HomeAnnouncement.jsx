@@ -18,7 +18,8 @@ export default function HomeAnnouncement() {
       <div className="ann-card">
         <h2 className="ann-title">{current.title}</h2>
         <div className="ann-body">
-          <p className="ann-p">{current.content}</p>
+          {String(current.content ?? '').split('\n').filter((line) => line.trim() !== '')
+            .map((line, i) => <p className="ann-p" key={i}>{line}</p>)}
         </div>
         <button type="button" className="ann-ok" onClick={handleOk} disabled={busy}>
           OK

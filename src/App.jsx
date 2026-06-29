@@ -5,6 +5,7 @@ import Navbar from './components/Navbar.jsx'
 import BottomNav from './components/BottomNav.jsx'
 import ProtectedRoute from './components/ProtectedRoute.jsx'
 import FloatingChat from './components/FloatingChat.jsx'
+import PopupHost from './components/PopupHost.jsx'
 // Entry pages are eager (instant first paint); everything else is code-split.
 import Home from './pages/Home.jsx'
 import Login from './pages/Login.jsx'
@@ -117,6 +118,7 @@ export default function App() {
       </Layout.Content>
       {!bare && <BottomNav />}
       <FloatingChat />
+      <PopupHost />
     </Layout>
   )
 }
