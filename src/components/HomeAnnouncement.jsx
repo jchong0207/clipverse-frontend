@@ -1,38 +1,28 @@
-import { useEffect, useState } from 'react'
-import { HOME_ANNOUNCEMENT } from '../data/homeAnnouncement.js'
-import { useAuth } from '../store/auth.jsx'
+import { useState } from 'react'
+import { usePopups } from '../store/popups.jsx'
 
-const KEY = 'cv_home_ann_seen'
+export default function HomeAnnouncement() {
+  const { current, markSeen } = usePopups()
+  const [busy, setBusy] = useState(false)
 
-// Reusable announcement popup: shows a title + multi-paragraph message once per session.
-export default function HomeAnnouncement({ announcement = HOME_ANNOUNCEMENT }) {
-  const { user } = useAuth()
-  const [open, setOpen] = useState(false)
-  const uid = user?.uid ?? user?.id ?? ''
-  const fill = (s) => String(s).replace('{uid}', uid)
+  if (!current) return null
 
-  useEffect(() => {
-    if (!announcement) return
-    let seen = false
-    try { seen = sessionStorage.getItem(KEY) === '1' } catch { /* noop */ }
-    if (!seen) setOpen(true)
-  }, [announcement])
-
-  const close = () => {
-    try { sessionStorage.setItem(KEY, '1') } catch { /* noop */ }
-    setOpen(false)
+  const handleOk = async () => {
+    setBusy(true)
+    await markSeen(current.id)
+    setBusy(false)
   }
-
-  if (!open || !announcement) return null
 
   return (
     <div className="ann-overlay" role="dialog" aria-modal="true">
       <div className="ann-card">
-        <h2 className="ann-title">{announcement.title}</h2>
+        <h2 className="ann-title">{current.title}</h2>
         <div className="ann-body">
-          {announcement.body.map((p, i) => <p className="ann-p" key={i}>{fill(p)}</p>)}
+          <p className="ann-p">{current.content}</p>
         </div>
-        <button type="button" className="ann-ok" onClick={close}>OK</button>
+        <button type="button" className="ann-ok" onClick={handleOk} disabled={busy}>
+          OK
+        </button>
       </div>
     </div>
   )
