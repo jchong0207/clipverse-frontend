@@ -33,7 +33,6 @@ export default function Register() {
         password: values.password,
         code: values.code,
       })
-      try { sessionStorage.removeItem('cv_home_ann_seen') } catch { /* noop */ }
       navigate('/', { replace: true })
     } catch (err) {
       setError(err.message || 'Registration failed')

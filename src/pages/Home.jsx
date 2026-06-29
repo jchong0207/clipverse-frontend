@@ -25,11 +25,11 @@ const LANG_ROWS = [
 export default function Home() {
   const { user } = useAuth()
   const { t } = useTranslation()
-  const popups = usePopups()
+  const { fetchOnHomeVisit } = usePopups()
 
   useEffect(() => {
-    if (user) popups.fetchOnHomeVisit()
-  }, [user])
+    if (user) fetchOnHomeVisit()
+  }, [user, fetchOnHomeVisit])
 
   // Try Now: go to the video section if logged in, otherwise to login/register
   const ctaTo = user ? '/videos' : '/login'
