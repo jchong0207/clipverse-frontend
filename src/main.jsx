@@ -4,6 +4,7 @@ import { BrowserRouter } from 'react-router-dom'
 import { ConfigProvider, App as AntApp } from 'antd'
 import App from './App.jsx'
 import { PopupProvider } from './store/popups.jsx'
+import { CustomerServiceProvider } from './store/customerService.jsx'
 import { AuthProvider } from './store/auth.jsx'
 import { VideosProvider } from './store/videos.jsx'
 import { DeployHistoryProvider } from './store/deploys.jsx'
@@ -29,17 +30,19 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       <AntApp>
         <BrowserRouter>
           <PopupProvider>
-            <AuthProvider>
-              <PaymentMethodProvider>
-                <VideosProvider>
-                  <DeployHistoryProvider>
-                    <NotificationProvider>
-                      <App />
-                    </NotificationProvider>
-                  </DeployHistoryProvider>
-                </VideosProvider>
-              </PaymentMethodProvider>
-            </AuthProvider>
+            <CustomerServiceProvider>
+              <AuthProvider>
+                <PaymentMethodProvider>
+                  <VideosProvider>
+                    <DeployHistoryProvider>
+                      <NotificationProvider>
+                        <App />
+                      </NotificationProvider>
+                    </DeployHistoryProvider>
+                  </VideosProvider>
+                </PaymentMethodProvider>
+              </AuthProvider>
+            </CustomerServiceProvider>
           </PopupProvider>
         </BrowserRouter>
       </AntApp>

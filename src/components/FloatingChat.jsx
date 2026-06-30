@@ -1,12 +1,13 @@
 import { useEffect, useRef, useState } from 'react'
 import { MessageFilled } from '@ant-design/icons'
-import { LINE_URL, openExternal } from '../constants.js'
+import { useCustomerService } from '../store/customerService.jsx'
 
 const SIZE = 54
 const MARGIN = 14
 
 // Global support chat bubble: floats over every page and can be dragged to either side.
 export default function FloatingChat() {
+  const { available, open } = useCustomerService()
   const [pos, setPos] = useState(null) // { x, y } top-left in px
   const drag = useRef({ active: false, moved: false, sx: 0, sy: 0, dx: 0, dy: 0 })
 
@@ -40,11 +41,11 @@ export default function FloatingChat() {
       // snap to nearest left / right edge, keep vertical position
       setPos((p) => clamp({ x: (p.x + SIZE / 2 < window.innerWidth / 2) ? MARGIN : window.innerWidth - SIZE - MARGIN, y: p.y }))
     } else {
-      openExternal(LINE_URL)
+      open()
     }
   }
 
-  if (!pos) return null
+  if (!pos || !available) return null
   return (
     <button
       type="button"
