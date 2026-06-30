@@ -145,6 +145,7 @@ const realApi = {
     pending: async () => http('/app-api/popup/pending'),
     seen: async (id) => http('/app-api/popup/seen', { method: 'POST', body: { popupId: id } }),
   },
+  customerService: { get: () => http('/app-api/customer-service') },
 }
 
 const impl = USE_REAL ? realApi : mockApi

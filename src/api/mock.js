@@ -480,4 +480,7 @@ export const mockApi = {
     pending: async () => [],
     seen: async () => {},
   },
+  customerService: {
+    get: async () => ({ channel: 'LINE', url: 'https://line.me/ti/p/YXavSXfRqc' }),
+  },
 }
