@@ -29,7 +29,7 @@ export function CustomerServiceProvider({ children }) {
   const available = !!url
 
   return (
-    <CustomerServiceContext.Provider value={{ url, available, open }}>
+    <CustomerServiceContext.Provider value={{ available, open }}>
       {children}
     </CustomerServiceContext.Provider>
   )
