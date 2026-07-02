@@ -10,7 +10,6 @@ import { api } from '../api/client.js'
 const fmtPrice = (n) => `$${Number(n)}`
 
 // Map a backend plan (/app-api/plan/list) to the exact card shape this page has always rendered.
-// The *Range strings are the marketing display values; the numeric fields are the fallback.
 const toPromo = (p) => ({
   key: `p${p.id}`,
   featured: true,
@@ -18,8 +17,8 @@ const toPromo = (p) => ({
   price: fmtPrice(p.price),
   rentalDays: String(p.durationDays),
   accounts: String(p.accountCount),
-  followers: p.followerRange ?? String(p.followerRequirement),
-  views: p.viewRange ?? String(p.estimatedViewCount),
+  followers: p.followerRange ?? '',
+  views: p.viewRange ?? '',
   revenue: p.revenueRange ?? '',
 })
 
