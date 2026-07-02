@@ -22,7 +22,9 @@ export default function SelectVideo() {
   const { state } = useLocation()
   const { user } = useAuth()
   const { videos: rawVideos } = useVideos()
-  const pkg = PROMOS.find((p) => p.key === state?.pkgKey) || PROMOS[0]
+  // Prefer the package object handed over by the Promotion page (backend-sourced); the
+  // PROMOS lookup remains as a fallback for direct navigation without state.
+  const pkg = state?.pkg || PROMOS.find((p) => p.key === state?.pkgKey) || PROMOS[0]
   const [selected, setSelected] = useState(null)
 
   // The logged-in member's uploaded videos (from the shared cache; prefetched after login).
