@@ -4,24 +4,29 @@ import { useAuth } from '../store/auth.jsx'
 import { usePopups } from '../store/popups.jsx'
 import HomeAnnouncement from './HomeAnnouncement.jsx'
 
-// App-shell popup driver. Mounted once (in App) so announcements can appear on ANY page — not only
-// the "/" landing route — and so the pending queue is refreshed at every moment a popup could newly
-// apply. The server owns all frequency/version rules; we just re-ask /pending when:
+// The home route ("/") is the only page announcements appear on.
+const HOME_PATH = '/'
+
+// App-shell popup driver. Mounted once (in App) but scoped to the home route: the pending queue is
+// only refreshed, and the announcement only rendered, while the user is on "/". The server owns all
+// frequency/version rules; we re-ask /pending when, while on home:
 //   • the user logs in / out,
-//   • the route changes (covers EVERY_HOME_VISIT and post-update re-display as the user navigates),
-//   • the tab regains focus (so an admin content edit appears without a manual reload/navigation).
+//   • the route becomes "/" (covers EVERY_HOME_VISIT and post-update re-display on each home visit),
+//   • the tab regains focus (so an admin content edit appears without a manual reload).
 export default function PopupHost() {
   const { user } = useAuth()
   const { refresh, clear } = usePopups()
   const { pathname } = useLocation()
 
-  useEffect(() => {
-    if (user) refresh()
-    else clear()
-  }, [user, pathname, refresh, clear])
+  const onHome = pathname === HOME_PATH
 
   useEffect(() => {
-    if (!user) return undefined
+    if (user && onHome) refresh()
+    else clear()
+  }, [user, onHome, refresh, clear])
+
+  useEffect(() => {
+    if (!user || !onHome) return undefined
     const onVisible = () => {
       if (document.visibilityState === 'visible') refresh()
     }
@@ -31,7 +36,9 @@ export default function PopupHost() {
       window.removeEventListener('focus', onVisible)
       document.removeEventListener('visibilitychange', onVisible)
     }
-  }, [user, refresh])
+  }, [user, onHome, refresh])
+
+  if (!onHome) return null
 
   return <HomeAnnouncement />
 }
